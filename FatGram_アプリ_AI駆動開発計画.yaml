@@ -1,0 +1,184 @@
+# FatGram アプリ AI駆動開発計画 Ver.1.0
+# AIツール(コード生成、テスト支援等)の活用を前提とした技術スタックと進行表
+
+# 1. 技術スタック (Technology Stack)
+technology_stack:
+  frontend:
+    platform: "Flutter" # iOS / Android クロスプラットフォーム開発 (要件: 2.4)
+    language: "Dart"
+    state_management: "Riverpod / Provider (または他のモダンな選択肢)"
+    ui_libraries: "Flutter Material Components, Cupertino Widgets"
+    localization: "Flutter Intl / easy_localization"
+  backend:
+    platform: "Google Cloud Platform (GCP)" # (要件: 2.4, 8)
+    compute: "Cloud Run" # コンテナベースでのデプロイを推奨 (Docker利用前提) (要件: 8)
+    database: "Cloud Firestore" # NoSQLデータベース (要件: 8)
+    authentication: "Firebase Authentication" # ユーザー認証 (要件: 8, [EI-SW-03])
+    ai_ml:
+      core_chat: "Vertex AI (Gemini API)" # 生成AIチャット機能 (要件: 8, [EI-SW-04])
+      custom_models: "Vertex AI Platform" # 将来的な独自モデル開発用 (脂肪燃焼推定、目標提案等) (要件: 8)
+    messaging:
+      push_notifications: "Firebase Cloud Messaging (FCM)" # プッシュ通知 (要件: 8, [F-GM-03], [F-UA-05])
+      background_tasks: "Cloud Tasks" # 非同期タスクキュー (要件: 8)
+      scheduled_tasks: "Cloud Scheduler" # 定期実行タスク (要件: 8)
+    storage: "Cloud Storage" # ファイルストレージ (将来拡張用) (要件: 8)
+    analytics:
+      app_usage: "Firebase Analytics / Google Analytics" # アプリ利用状況分析 (要件: 8)
+      data_warehouse: "BigQuery" # 高度なデータ分析用 (要件: 8)
+    monitoring:
+      logging: "Cloud Logging" # ログ収集・分析 (要件: 8)
+      metrics: "Cloud Monitoring" # パフォーマンス監視 (要件: 8)
+    api_management: "API Gateway" # APIエンドポイント管理・保護 (要件: 8)
+    security: "Cloud Armor" # DDoS対策・WAF (オプション) (要件: 8)
+    cost_management: "Cloud Billing & Cost Management Tools" # コスト管理 (要件: 8, [NF-MN-04])
+  smartwatch_integration:
+    ios: "HealthKit API" # Apple Watch連携 (要件: 1.5, [EI-SW-01])
+    android: "Health Connect API" # Wear OS連携 (要件: 1.5, [EI-SW-02])
+  advertising:
+    platform: "Google AdMob SDK" # 無料版広告表示 (要件: 1.5, [EI-SW-06], [F-OT-05])
+  billing:
+    ios: "App Store Connect In-App Purchase API" # iOS課金 (要件: [EI-SW-05], 3.7)
+    android: "Google Play Billing Library" # Android課金 (要件: [EI-SW-05], 3.7)
+  development_tools:
+    version_control: "Git / GitHub (または GitLab/Bitbucket)"
+    containerization: "Docker" # ローカル開発環境とデプロイの一貫性 (Cloud Run連携)
+    ide: "VS Code / Android Studio / Xcode"
+    ci_cd: "GitHub Actions / Cloud Build (または他のCI/CDツール)"
+    ai_dev_tools: "GitHub Copilot / Gemini Code Assist 等" # コード生成・補完支援
+
+# 2. 機能実装 進行表 (Implementation Schedule)
+# 各フェーズは目安であり、アジャイルに進捗や優先度を調整する
+implementation_schedule:
+  phase_1_mvp_core:
+    name: "フェーズ1: MVPコア機能開発"
+    duration_weeks: 8 # 目安期間
+    goals:
+      - "スマートウォッチからの基本データ同期・表示"
+      - "推定脂肪燃焼グラム数の基本計算・表示"
+      - "ユーザー認証（メール/パスワード）"
+      - "基本的なUI/UX（初期は日本語のみも検討）"
+      - "広告表示（無料版）"
+      - "CI/CDパイプラインの構築"
+    features:
+      - "[F-DT-01] データ表示 (基本)"
+      - "[F-DT-03] 時系列グラフ (基本)"
+      - "[F-FB-01] 脂肪燃焼計算 (基本: 7.2kcal/g)"
+      - "[F-FB-02] 日次表示"
+      - "[F-UA-01] ユーザー登録・ログイン (メール)"
+      - "[F-UA-02] プロフィール登録 (基本)"
+      - "[F-OT-05] AdMob広告表示"
+      - "[F-OT-01] 基本設定画面"
+      - "[F-OT-03] 規約/ポリシー表示"
+      - "[EI-SW-01],[EI-SW-02] HealthKit/Connect連携 (基本)"
+      - "[EI-SW-03] Firebase Auth連携"
+      - "[EI-SW-06] AdMob SDK連携"
+    tech_focus:
+      - "Flutter UI基礎、状態管理"
+      - "Firebase Auth, Firestore (基本スキーマ)"
+      - "HealthKit/Connect API 基本連携"
+      - "AdMob SDK 導入"
+      - "Docker環境構築、基本的なCI/CD設定"
+      - "AI開発ツールの活用開始"
+    deliverables:
+      - "動作可能なMVPアプリ（無料版相当、基本機能のみ）"
+      - "基本的なバックエンドAPI (Cloud Run/Functions)"
+
+  phase_2_ai_subscription_basics:
+    name: "フェーズ2: AIチャットとベーシックプラン導入"
+    duration_weeks: 6 # 目安期間
+    goals:
+      - "基本的なAIチャット機能（フリーミアム上限付き）"
+      - "ベーシックサブスクリプション導入（広告非表示、AIデータ参照）"
+      - "サーバーサイドでの課金レシート検証"
+      - "多言語対応（日/英）の基盤構築"
+      - "分析レポートの基盤構築"
+    features:
+      - "[F-AI-01] 基本AIチャット (フリーミアム上限)"
+      - "[F-AI-02] 一般的アドバイス提供"
+      - "[F-AI-03] 質問履歴保存"
+      - "[F-AI-04] AIによる個人データ参照 (ベーシック)"
+      - "[F-SB-01] ベーシックプラン購入"
+      - "[F-SB-02] プラン表示"
+      - "[F-SB-03] アップ/ダウングレード/キャンセル (基本)"
+      - "[F-SB-04] プラン比較表示"
+      - "[F-SB-05] 有料プラン案内"
+      - "[F-SB-06] サーバーサイドレシート検証"
+      - "[F-SB-07] サブスクリプション状態管理"
+      - "[F-SB-08] 決済エラー表示"
+      - "[F-SB-09] プラットフォームガイドライン準拠"
+      - "[F-OT-06] 言語切替機能"
+      - "[F-RP-01] 週次/月次レポート (基本表示)"
+    tech_focus:
+      - "Vertex AI (Gemini API) 連携"
+      - "App Store / Google Play 課金API連携 (Flutterライブラリ活用)"
+      - "サーバーサイド (Cloud Run/Functions) でのレシート検証ロジック実装"
+      - "Firestore スキーマ拡張 (サブスクリプション情報、AI履歴)"
+      - "Flutter 国際化対応"
+      - "API Gateway 設定 (認証、レート制限等)"
+      - "AI開発ツールによるテストコード生成支援"
+    deliverables:
+      - "AIチャット機能付きアプリ"
+      - "ベーシックプラン購入・管理機能"
+      - "多言語対応されたアプリ"
+
+  phase_3_premium_advanced_features:
+    name: "フェーズ3: プレミアムプランと高度機能開発"
+    duration_weeks: 6 # 目安期間
+    goals:
+      - "プレミアムサブスクリプション導入"
+      - "ウェブ検索付きAIチャット機能"
+      - "詳細な分析レポート機能"
+      - "目標設定・進捗管理機能"
+      - "データエクスポート機能"
+    features:
+      - "[F-AI-01] AIチャット (プレミアム上限)"
+      - "[F-AI-05] ウェブ検索付きAIチャット"
+      - "[F-RP-02] 運動タイプ別分析"
+      - "[F-RP-03] 時間帯/曜日別分析"
+      - "[F-RP-04] 進捗比較表示"
+      - "[F-RP-05] PDFエクスポート"
+      - "[F-GM-01] 目標設定"
+      - "[F-GM-02] 進捗表示"
+      - "[F-GM-03] 目標達成通知 (FCM)"
+      - "[F-GM-04] 目標履歴"
+      - "[F-GM-05] 目標提案 (基本ロジック)"
+      - "[F-OT-04] CSVデータエクスポート"
+    tech_focus:
+      - "Vertex AI (Web検索連携、Function Calling等)"
+      - "Firestore / BigQuery を利用した高度なデータ集計・分析ロジック (Cloud Functions/Run)"
+      - "PDF生成ライブラリ (Flutter / Backend)"
+      - "CSV生成ロジック"
+      - "FCM連携によるプッシュ通知実装"
+      - "Cloud Scheduler/Tasks を利用したレポート生成や通知の自動化"
+      - "AI開発ツールによるリファクタリング支援"
+    deliverables:
+      - "プレミアムプラン機能実装"
+      - "詳細レポート・目標設定機能"
+      - "データエクスポート機能"
+
+  phase_4_optimization_refinement:
+    name: "フェーズ4: 最適化と改善 (継続的)"
+    duration_weeks: "Ongoing" # 継続フェーズ
+    goals:
+      - "パフォーマンスチューニング ([NF-PF-0X])"
+      - "コスト最適化 ([NF-MN-04])"
+      - "脂肪燃焼計算ロジックの改善検討 ([F-FB-01], [F-FB-05], 7.1)"
+      - "AI機能の精度向上、応答改善 ([NF-PF-03])"
+      - "ユーザーフィードバックの反映"
+      - "セキュリティ強化 ([NF-SC-0X])"
+    features:
+      - "既存機能の改善・リファクタリング"
+      - "新しい分析指標の追加検討 ([NF-MN-03])"
+      - "A/BテストによるUI/UX改善"
+    tech_focus:
+      - "Cloud Monitoring/Logging を活用したボトルネック分析"
+      - "Flutter / Backend コードプロファイリング"
+      - "Firestore クエリ/インデックス最適化"
+      - "Cloud Run/Functions インスタンス設定最適化"
+      - "Vertex AI モデルの評価・再チューニング検討"
+      - "BigQuery を活用した大規模データ分析"
+      - "Cloud Armor 等のセキュリティサービス導入検討"
+      - "AI開発ツールによるコード品質分析・改善提案"
+    deliverables:
+      - "パフォーマンス・コスト効率が改善されたアプリ"
+      - "定期的な機能改善リリース"
