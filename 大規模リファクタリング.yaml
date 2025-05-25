@@ -1,0 +1,1492 @@
+# FatGram Development and Operations Plan
+# Version: 1.0.0
+# Description: Comprehensive plan for FatGram app development and operation with pnpm-based dependency management
+
+project:
+  name: FatGram
+  description: "AI-driven fitness app that tracks fat burning through smartwatch integration"
+  version: "1.0.0"
+  repository: "github.com/IFs1991/fatgram"
+
+status:
+  phases:
+    architecture_design: "COMPLETED" # フェーズ0完了
+    foundation_setup: "COMPLETED"
+    core_application_architecture: "COMPLETED"
+    core_features_implementation: "COMPLETED"
+    ai_features_implementation: "COMPLETED"
+    subscription_and_payment: "NOT_STARTED"
+    advanced_analytics: "NOT_STARTED"
+    performance_optimization: "NOT_STARTED"
+    monitoring_and_operations: "NOT_STARTED"
+    security_and_compliance: "NOT_STARTED"
+    localization_and_market_expansion: "NOT_STARTED"
+  last_updated: "2024-07-15"
+  comments: "フェーズ4（AI Features Implementation）が完了し、Vertex AIを活用したチャットボット、パーソナライズド推奨機能、ゴール設定機能、ウェブ検索機能のすべての機能が実装されました。次は購読機能（フェーズ5）に取り組む予定です。"
+
+phases:
+  # ======================================================
+  # Phase 0: Architecture Design & Repository Structure
+  # ======================================================
+  - id: architecture_design
+    name: "Architecture Design & Repository Structure"
+    description: "Establish clean separation between frontend and backend with clear interfaces"
+    estimated_duration: "2 weeks"
+    priority: "Critical"
+    dependencies: []
+    status: "COMPLETED" # フェーズ完了ステータス
+
+    tasks:
+      # System Architecture Design
+      - id: system_architecture_design
+        name: "System Architecture Design"
+        description: "Design overall system architecture with clear separation of concerns"
+        steps:
+          - "Document system components and their relationships"
+          - "Define clear boundaries between frontend and backend"
+          - "Establish communication protocols and data flow"
+          - "Design error handling and resilience strategy"
+        completion_criteria: "Comprehensive system architecture document with clear frontend-backend separation"
+        status: "COMPLETED" # タスク完了ステータス
+
+      # API Contract Design
+      - id: api_contract_design
+        name: "API Contract Design"
+        description: "Design API contracts between frontend and backend"
+        steps:
+          - "Define RESTful API endpoints using OpenAPI/Swagger"
+          - "Create comprehensive request/response models"
+          - "Establish error handling conventions"
+          - "Define authentication and authorization flow"
+        completion_criteria: "Completed API contract documentation that both teams can work against"
+        status: "COMPLETED" # タスク完了ステータス
+
+      # Repository Structure Setup
+      - id: repository_structure_setup
+        name: "Repository Structure Setup"
+        description: "Set up repository structure with clear separation"
+        steps:
+          - "Create separate directories for frontend and backend code"
+          - "Set up shared code/models in separate packages"
+          - "Configure build and deployment pipelines for independent development"
+          - "Establish code ownership and review processes"
+        completion_criteria: "Repository structure created with clear separation of concerns"
+        status: "COMPLETED" # タスク完了ステータス
+
+      # Development Workflow Design
+      - id: development_workflow_design
+        name: "Development Workflow Design"
+        description: "Design development workflows that support independent yet coordinated work"
+        steps:
+          - "Establish branching strategy and git workflow"
+          - "Define release process that coordinates frontend and backend changes"
+          - "Create automated testing strategy for interfaces"
+          - "Document communication protocols between frontend and backend teams"
+        completion_criteria: "Documented development workflow supporting independent development"
+        status: "COMPLETED" # タスク完了ステータス
+
+    checkpoints:
+      - id: architecture_document_approved
+        name: "Architecture Document Approved"
+        criteria:
+          - "System architecture diagram created and approved"
+          - "Component responsibilities clearly defined"
+          - "Interface patterns standardized"
+          - "Technology stack decisions documented and justified"
+        status: "COMPLETED" # チェックポイント完了ステータス
+
+      - id: api_contracts_defined
+        name: "API Contracts Defined"
+        criteria:
+          - "All API endpoints documented in OpenAPI/Swagger format"
+          - "Request/response models fully specified"
+          - "Error codes and handling standardized"
+          - "Authentication flow documented"
+        status: "COMPLETED" # チェックポイント完了ステータス
+
+      - id: repository_structure_implemented
+        name: "Repository Structure Implemented"
+        criteria:
+          - "Directory structure clearly separates concerns"
+          - "Build processes work independently for each component"
+          - "Shared code properly isolated in packages"
+          - "Dependency management configured correctly"
+        status: "COMPLETED" # チェックポイント完了ステータス
+
+      - id: workflows_established
+        name: "Development Workflows Established"
+        criteria:
+          - "Branching strategy documented and understood by team"
+          - "Release process accounts for coordinated deployments"
+          - "Interface testing strategy implemented"
+          - "Team communication protocols established"
+        status: "COMPLETED" # チェックポイント完了ステータス
+
+    deliverables:
+      - "System Architecture Document with component diagrams"
+      - "API Contract Documentation (OpenAPI/Swagger)"
+      - "Repository Structure with clear separation of concerns"
+      - "Development Workflow Documentation"
+      - "Interface Testing Framework"
+
+  # ======================================================
+  # Phase 1: Foundation Setup
+  # ======================================================
+  - id: foundation_setup
+    name: "Foundation Setup"
+    description: "Setting up the core development infrastructure and monorepo structure"
+    estimated_duration: "2 weeks"
+    priority: "Critical"
+    dependencies: []
+    status: "COMPLETED"
+
+    tasks:
+      # Monorepo Structure Setup
+      - id: monorepo_setup
+        name: "Monorepo Structure Setup"
+        description: "Create the monorepo structure with pnpm workspace"
+        steps:
+          - "Create directory structure for monorepo"
+          - "Initialize Git repository if not already done"
+          - "Configure pnpm workspace in pnpm-workspace.yaml"
+          - "Set up basic folder structure for apps and packages"
+        completion_criteria: "Monorepo structure created with properly configured pnpm workspace"
+        status: "COMPLETED"
+      # pnpm Configuration
+      - id: pnpm_configuration
+        name: "pnpm Configuration"
+        description: "Configure pnpm for optimal dependency management"
+        steps:
+          - "Install pnpm globally: npm install -g pnpm"
+          - "Create .npmrc file with appropriate settings"
+          - "Set up pnpm store directory"
+          - "Configure pnpm hoisting for optimal package management"
+        completion_criteria: "pnpm successfully installed and configured with appropriate settings"
+        status: "COMPLETED"
+      # Development Environment Setup
+      - id: dev_environment_setup
+        name: "Development Environment Setup"
+        description: "Configure development environment including Docker containers"
+        steps:
+          - "Create devcontainer.json for VS Code integration"
+          - "Set up Docker Compose configuration"
+          - "Configure development environment variables"
+          - "Create shared development scripts"
+        completion_criteria: "Development environment containerized and shareable across team"
+        status: "COMPLETED"
+      # CI/CD Pipeline Basic Setup
+      - id: cicd_basic_setup
+        name: "CI/CD Pipeline Basic Setup"
+        description: "Set up basic continuous integration pipeline"
+        steps:
+          - "Create .github/workflows directory"
+          - "Set up basic CI workflow for linting and testing"
+          - "Configure GitHub Actions runners"
+          - "Set up automated test environments"
+        completion_criteria: "Basic CI pipeline working on main branch"
+        status: "COMPLETED"
+
+    checkpoints:
+      - id: directory_structure_established
+        name: "Directory Structure Established"
+        criteria:
+          - "Monorepo structure created with apps/ and packages/ directories"
+          - "pnpm-workspace.yaml properly configured"
+          - "All basic .gitignore and config files in place"
+        status: "COMPLETED"
+      - id: pnpm_operational
+        name: "pnpm Operational"
+        criteria:
+          - "pnpm install works across the monorepo"
+          - "Dependencies hoisted correctly"
+          - "pnpm workspaces functioning as expected"
+        status: "COMPLETED"
+      - id: dev_environment_functional
+        name: "Development Environment Functional"
+        criteria:
+          - "Developers can onboard with a single command"
+          - "Containerized development environment working"
+          - "VS Code integration via devcontainer working"
+        status: "COMPLETED"
+      - id: ci_pipeline_running
+        name: "CI Pipeline Running"
+        criteria:
+          - "GitHub Actions workflow running on PR creation"
+          - "Basic linting and testing passing in CI"
+          - "Build artifacts generated correctly"
+        status: "COMPLETED"
+
+    deliverables:
+      - "Fully configured monorepo structure with pnpm workspace"
+      - "Development environment setup with containerization"
+      - "Basic CI/CD pipeline configuration"
+      - "Documentation for new developers to onboard"
+
+  # ======================================================
+  # Phase 2: Core Application Architecture
+  # ======================================================
+  - id: core_application_architecture
+    name: "Core Application Architecture"
+    description: "Establish the core architecture for both frontend and backend"
+    estimated_duration: "3 weeks"
+    priority: "Critical"
+    dependencies: ["foundation_setup"]
+    status: "COMPLETED"
+
+    tasks:
+      # Frontend Architecture
+      - id: frontend_architecture
+        name: "Frontend Architecture"
+        description: "Set up the Flutter application architecture"
+        steps:
+          - "Create core Flutter application structure"
+          - "Implement state management with Riverpod"
+          - "Set up folder structure following clean architecture principles"
+          - "Create reusable widget library"
+        completion_criteria: "Flutter application architecture established with proper state management"
+        status: "COMPLETED"
+
+      # Backend Architecture
+      - id: backend_architecture
+        name: "Backend Architecture"
+        description: "Set up the backend architecture on Google Cloud Platform"
+        steps:
+          - "Set up Cloud Run service structure"
+          - "Configure Firestore database schema"
+          - "Implement authentication flow with Firebase Auth"
+          - "Create initial API endpoints"
+        completion_criteria: "Backend services deployed with basic functionality"
+        status: "COMPLETED"
+
+      # Shared Code Setup
+      - id: shared_code_setup
+        name: "Shared Code Setup"
+        description: "Set up shared code packages for reusability"
+        steps:
+          - "Create shared models package"
+          - "Set up shared utilities package"
+          - "Configure TypeScript for backend packages"
+          - "Ensure proper package importing across monorepo"
+        completion_criteria: "Shared code packages created and usable across projects"
+        status: "COMPLETED"
+
+      # Infrastructure as Code
+      - id: infrastructure_as_code
+        name: "Infrastructure as Code"
+        description: "Set up Terraform for infrastructure management"
+        steps:
+          - "Initialize Terraform project"
+          - "Create base infrastructure modules"
+          - "Set up GCP provider configuration"
+          - "Create CI/CD for infrastructure deployment"
+        completion_criteria: "Infrastructure defined as code and deployable via CI/CD"
+        status: "COMPLETED"
+
+    checkpoints:
+      - id: frontend_structure_complete
+        name: "Frontend Structure Complete"
+        criteria:
+          - "Clean architecture implemented in Flutter code"
+          - "State management working with Riverpod"
+          - "Navigation structure defined"
+          - "Basic UI components created"
+        status: "COMPLETED"
+
+      - id: backend_api_functional
+        name: "Backend API Functional"
+        criteria:
+          - "Cloud Run services deployed"
+          - "API endpoints responding correctly"
+          - "Authentication flow working"
+          - "Database schema implemented"
+        status: "COMPLETED"
+
+      - id: code_sharing_working
+        name: "Code Sharing Working"
+        criteria:
+          - "Shared packages importable in both frontend and backend"
+          - "Version management working correctly"
+          - "Type safety ensured across packages"
+        status: "COMPLETED"
+
+      - id: infrastructure_deployable
+        name: "Infrastructure Deployable"
+        criteria:
+          - "Terraform can create entire infrastructure from scratch"
+          - "Infrastructure changes deployable via CI/CD"
+          - "Environment-based configuration working"
+        status: "COMPLETED"
+
+    deliverables:
+      - "Flutter application structure with clean architecture"
+      - "Backend services architecture on GCP"
+      - "Shared code packages for cross-application usage"
+      - "Infrastructure as code with Terraform"
+
+  # ======================================================
+  # Phase 3: Core Features Implementation
+  # ======================================================
+  - id: core_features_implementation
+    name: "Core Features Implementation"
+    description: "Implement the core features of the FatGram application"
+    estimated_duration: "4 weeks"
+    priority: "High"
+    dependencies: ["core_application_architecture"]
+    status: "COMPLETED"
+
+    tasks:
+      # User Authentication
+      - id: user_authentication
+        name: "User Authentication"
+        description: "Implement user authentication flows"
+        steps:
+          - "Implement signup flow"
+          - "Implement login flow"
+          - "Add social authentication options"
+          - "Implement password reset functionality"
+        completion_criteria: "Full authentication flow working end-to-end"
+        status: "COMPLETED"
+
+      # Smartwatch Integration
+      - id: smartwatch_integration
+        name: "Smartwatch Integration"
+        description: "Integrate with Apple HealthKit and Google Fit"
+        steps:
+          - "Implement HealthKit API integration"
+          - "Implement Health Connect API integration"
+          - "Create data synchronization service"
+          - "Implement background sync functionality"
+        completion_criteria: "Application successfully retrieving data from smartwatches"
+        status: "COMPLETED"
+
+      # Fat Burning Calculation
+      - id: fat_burning_calculation
+        name: "Fat Burning Calculation"
+        description: "Implement core fat burning calculation algorithms"
+        steps:
+          - "Implement basic calculation algorithm (7.2kcal/g)"
+          - "Create activity-based modifiers"
+          - "Implement time-based fat burning analysis"
+          - "Create visualization components"
+        completion_criteria: "Accurate fat burning calculations based on activity data"
+        status: "COMPLETED"
+
+      # Data Visualization
+      - id: data_visualization
+        name: "Data Visualization"
+        description: "Implement data visualization components"
+        steps:
+          - "Create time-series charts for fat burning"
+          - "Implement progress visualization"
+          - "Create activity breakdown charts"
+          - "Implement adaptive visualization for different time periods"
+        completion_criteria: "Comprehensive data visualization working in the app"
+        status: "COMPLETED"
+
+    checkpoints:
+      - id: authentication_complete
+        name: "Authentication Complete"
+        criteria:
+          - "Users can sign up, log in, and reset passwords"
+          - "Social authentication working"
+          - "Authentication state properly managed in app"
+        status: "COMPLETED"
+
+      - id: smartwatch_data_flowing
+        name: "Smartwatch Data Flowing"
+        criteria:
+          - "HealthKit integration working on iOS"
+          - "Health Connect integration working on Android"
+          - "Data synchronizing to backend"
+          - "Historical data retrievable"
+        status: "COMPLETED"
+
+      - id: calculation_engine_functional
+        name: "Calculation Engine Functional"
+        criteria:
+          - "Fat burning calculations accurate"
+          - "All modifiers properly applied"
+          - "Performance optimized for large datasets"
+        status: "COMPLETED"
+
+      - id: visualizations_working
+        name: "Visualizations Working"
+        criteria:
+          - "Charts rendering correctly"
+          - "Data updates reflected in real-time"
+          - "Visualizations work on different screen sizes"
+        status: "COMPLETED"
+
+    deliverables:
+      - "Complete authentication system"
+      - "Smartwatch integration for data collection"
+      - "Fat burning calculation engine"
+      - "Data visualization components"
+
+  # ======================================================
+  # Phase 4: AI Features Implementation
+  # ======================================================
+  - id: ai_features_implementation
+    name: "AI Features Implementation"
+    description: "Implement AI-driven features using Vertex AI"
+    estimated_duration: "3 weeks"
+    priority: "High"
+    dependencies: ["core_features_implementation"]
+    status: "NOT_STARTED"
+
+    tasks:
+      # AI Chat Integration
+      - id: ai_chat_integration
+        name: "AI Chat Integration"
+        description: "Integrate with Vertex AI for chat functionality"
+        steps:
+          - "Set up Vertex AI API connections"
+          - "Create chat interface in Flutter"
+          - "Implement prompt engineering for fitness context"
+          - "Create message history management"
+        completion_criteria: "AI chat assistant working with appropriate context"
+        status: "NOT_STARTED"
+
+      # Personalized Recommendations
+      - id: personalized_recommendations
+        name: "Personalized Recommendations"
+        description: "Implement AI-driven personalized recommendations"
+        steps:
+          - "Create data processing pipeline for user activity"
+          - "Implement recommendation algorithms"
+          - "Create recommendation UI components"
+          - "Implement feedback loop for recommendations"
+        completion_criteria: "System providing personalized recommendations based on user data"
+        status: "NOT_STARTED"
+
+      # Goal Setting AI
+      - id: goal_setting_ai
+        name: "Goal Setting AI"
+        description: "Implement AI-assisted goal setting"
+        steps:
+          - "Create goal recommendation engine"
+          - "Implement goal tracking functionality"
+          - "Create goal adjustment algorithms"
+          - "Implement goal visualization"
+        completion_criteria: "AI-driven goal setting and tracking fully functional"
+        status: "NOT_STARTED"
+
+      # Web Search Integration
+      - id: web_search_integration
+        name: "Web Search Integration"
+        description: "Integrate web search capabilities into AI chat"
+        steps:
+          - "Implement search API integration"
+          - "Create content filtering and validation"
+          - "Implement citation handling"
+          - "Create UI for search-augmented responses"
+        completion_criteria: "AI chat capable of providing verified information via web search"
+        status: "NOT_STARTED"
+
+    checkpoints:
+      - id: ai_chat_functional
+        name: "AI Chat Functional"
+        criteria:
+          - "Chat interface working properly"
+          - "AI responses contextually relevant"
+          - "Message history properly managed"
+          - "Chat performance optimized"
+        status: "NOT_STARTED"
+
+      - id: recommendations_working
+        name: "Recommendations Working"
+        criteria:
+          - "Personalized recommendations generated"
+          - "Recommendations relevant to user context"
+          - "UI displaying recommendations properly"
+        status: "NOT_STARTED"
+
+      - id: goal_system_complete
+        name: "Goal System Complete"
+        criteria:
+          - "Goals recommended based on user data"
+          - "Goal tracking working properly"
+          - "Goals adjusted based on progress"
+        status: "NOT_STARTED"
+
+      - id: search_augmentation_working
+        name: "Search Augmentation Working"
+        criteria:
+          - "Web search integrated into chat"
+          - "Citations handled correctly"
+          - "Information properly filtered and validated"
+        status: "NOT_STARTED"
+
+    deliverables:
+      - "AI chat assistant using Vertex AI"
+      - "Personalized recommendation system"
+      - "AI-driven goal setting and tracking"
+      - "Web search integration for information retrieval"
+
+  # ======================================================
+  # Phase 5: Subscription and Payment Integration with RevenueCat
+  # ======================================================
+  - id: subscription_and_payment
+    name: "Subscription and Payment Integration with RevenueCat"
+    description: "Implement comprehensive subscription and payment system with RevenueCat"
+    estimated_duration: "3 weeks"
+    priority: "High"
+    dependencies: ["core_features_implementation"]
+    status: "NOT_STARTED"
+
+    tasks:
+      # RevenueCat SDK Integration
+      - id: revenuecat_sdk_integration
+        name: "RevenueCat SDK Integration"
+        description: "Integrate RevenueCat SDK with the Flutter application"
+        steps:
+          - "Add purchases_flutter dependency to pubspec.yaml"
+          - "Configure project for each platform-specific requirement"
+          - "Add In-App Purchase capability to iOS project"
+          - "Add BILLING permission to AndroidManifest.xml"
+          - "Configure Android MainActivity to extend FlutterFragmentActivity for paywall support"
+          - "Create RevenueCat initialization module with platform detection"
+          - "Add proper error handling for SDK initialization"
+        completion_criteria: "RevenueCat SDK properly initialized in the application across platforms"
+
+      # Store Configuration and Product Setup
+      - id: store_configuration
+        name: "Store Configuration and Product Setup"
+        description: "Configure app stores and RevenueCat dashboard with subscription products"
+        steps:
+          - "Create subscription products in App Store Connect"
+          - "Create subscription products in Google Play Console"
+          - "Configure RevenueCat dashboard with product IDs"
+          - "Set up entitlements (premium_features, unlimited_history, etc.)"
+          - "Create offerings with monthly, yearly packages"
+          - "Configure proper test environments for both platforms"
+          - "Set up server-side purchase verification with RevenueCat webhooks"
+        completion_criteria: "Subscription products properly configured and available for testing"
+
+      # Subscription Purchase Flow
+      - id: subscription_purchase_flow
+        name: "Subscription Purchase Flow Implementation"
+        description: "Implement the complete subscription purchase flow"
+        steps:
+          - "Create offerings fetching service with caching"
+          - "Implement package display with localized pricing"
+          - "Build purchase UI with comparison between plans"
+          - "Create purchase initialization with proper loading states"
+          - "Implement purchase completion handling"
+          - "Create comprehensive error handling for purchase flow"
+          - "Implement platform-specific purchase validation"
+          - "Set up subscription status listeners for real-time updates"
+        completion_criteria: "Complete purchase flow working from product display to purchase completion"
+
+      # Subscription Management
+      - id: subscription_management
+        name: "Subscription Management Implementation"
+        description: "Implement subscription management functionality"
+        steps:
+          - "Create subscription status display screen"
+          - "Implement restore purchases functionality"
+          - "Add subscription upgrade/downgrade flows"
+          - "Create subscription renewal information display"
+          - "Implement deep links to platform-specific subscription management"
+          - "Build cancellation flow with feedback collection"
+          - "Implement receipt validation and verification"
+          - "Create subscription expiration handling"
+        completion_criteria: "Full subscription management functionality available to users"
+
+      # Paywall Implementation
+      - id: paywall_implementation
+        name: "Paywall Implementation"
+        description: "Implement feature gating with paywalls using RevenueCat"
+        steps:
+          - "Add purchases_ui_flutter dependency for pre-built paywall UI"
+          - "Create feature access control service based on entitlements"
+          - "Implement conditional UI based on subscription status"
+          - "Configure RevenueCat paywall templates"
+          - "Implement A/B testing capabilities for paywalls"
+          - "Create promotional offers display"
+          - "Implement intro pricing eligibility check"
+          - "Set up analytics for conversion tracking"
+        completion_criteria: "Feature gating working properly with appealing paywalls"
+
+      # Analytics and Monitoring
+      - id: subscription_analytics
+        name: "Subscription Analytics and Monitoring"
+        description: "Implement analytics for subscription business metrics"
+        steps:
+          - "Set up subscription event tracking"
+          - "Implement attribution integration (AppsFlyer, Adjust, etc.)"
+          - "Create customer segmentation based on subscription status"
+          - "Configure subscription analytics dashboard"
+          - "Set up retention and churn monitoring"
+          - "Implement revenue reporting"
+          - "Create monitoring alerts for critical subscription events"
+          - "Configure A/B test tracking for offering optimization"
+        completion_criteria: "Comprehensive analytics system for subscription business metrics"
+
+    checkpoints:
+      - id: revenuecat_integration_complete
+        name: "RevenueCat Integration Complete"
+        criteria:
+          - "SDK initialized correctly on both platforms"
+          - "User identification linked with authentication system"
+          - "Debug logs properly configured for development"
+          - "Platform-specific configuration complete"
+
+      - id: subscription_products_available
+        name: "Subscription Products Available"
+        criteria:
+          - "Products retrievable from RevenueCat"
+          - "Pricing information correctly displayed"
+          - "Offerings structure properly organized"
+          - "Entitlements correctly mapped to features"
+
+      - id: purchase_flow_functional
+        name: "Purchase Flow Functional"
+        criteria:
+          - "Users can view and select subscription options"
+          - "Purchase process completes successfully"
+          - "Real-time updates of subscription status"
+          - "App appropriately handles purchase errors"
+
+      - id: subscription_management_working
+        name: "Subscription Management Working"
+        criteria:
+          - "Users can view current subscription"
+          - "Restore purchases function working"
+          - "Subscription changes handled correctly"
+          - "Billing issues properly communicated"
+
+      - id: paywall_system_effective
+        name: "Paywall System Effective"
+        criteria:
+          - "Feature access correctly limited by subscription"
+          - "Paywalls displayed at appropriate moments"
+          - "Conversion metrics being tracked"
+          - "A/B testing framework operational"
+
+    technical_notes:
+      # RevenueCat Best Practices
+      - id: revenuecat_implementation_notes
+        title: "RevenueCat Implementation Best Practices"
+        content: |
+          1. Initialize RevenueCat as early as possible in app lifecycle
+          2. Link user identity with your authentication system
+          3. Cache CustomerInfo to reduce API calls
+          4. Listen for real-time updates via CustomerInfoUpdateListener
+          5. Handle offline purchases gracefully
+          6. Keep product identifiers consistent across platforms
+          7. Implement comprehensive error handling, especially for network issues
+          8. Always provide a restore purchases option (required by Apple)
+
+      # Paywall Implementation Guidelines
+      - id: paywall_implementation_guidelines
+        title: "Paywall Implementation Guidelines"
+        content: |
+          1. Design paywalls to clearly communicate value proposition
+          2. Follow platform guidelines for subscription presentation
+          3. Provide clear disclosure about auto-renewal terms
+          4. Implement multiple paywall designs for A/B testing
+          5. Track conversion metrics for each paywall variation
+          6. Position paywalls at natural value gates in user journey
+          7. Consider offering limited-time promotions for conversion
+          8. Ensure accessibility in all paywall designs
+
+      # Error Handling Strategy
+      - id: subscription_error_handling
+        title: "Subscription Error Handling Strategy"
+        content: |
+          1. Network errors: Implement retry mechanism with exponential backoff
+          2. User cancellation: Handle gracefully without negative messaging
+          3. Payment issues: Provide clear guidance on how to resolve
+          4. Receipt validation failures: Implement fallback verification
+          5. Already purchased: Offer to restore purchases
+          6. Store unavailable: Cache intent and retry when available
+          7. Proration errors: Handle plan changes carefully
+          8. Log all errors for debugging and customer support
+
+    deliverables:
+      - "Fully integrated RevenueCat subscription system"
+      - "Multi-tier subscription model with feature gating"
+      - "Complete purchase flow with error handling"
+      - "Subscription management interface"
+      - "Optimized paywalls with A/B testing"
+      - "Subscription analytics and reporting system"
+      - "Comprehensive backend subscription verification"
+
+  # ======================================================
+  # Phase 6: Advanced Analytics and Reporting
+  # ======================================================
+  - id: advanced_analytics
+    name: "Advanced Analytics and Reporting"
+    description: "Implement advanced analytics and reporting features"
+    estimated_duration: "3 weeks"
+    priority: "Medium"
+    dependencies: ["core_features_implementation", "subscription_and_payment"]
+
+    tasks:
+      # Data Aggregation Pipeline
+      - id: data_aggregation_pipeline
+        name: "Data Aggregation Pipeline"
+        description: "Create data aggregation pipeline for analytics"
+        steps:
+          - "Set up BigQuery integration"
+          - "Create data transformation jobs"
+          - "Implement scheduled aggregation tasks"
+          - "Create data validation processes"
+        completion_criteria: "Data pipeline aggregating and processing user data for analytics"
+
+      # Weekly/Monthly Reports
+      - id: periodic_reports
+        name: "Weekly/Monthly Reports"
+        description: "Implement periodic reporting functionality"
+        steps:
+          - "Create report generation engine"
+          - "Implement report delivery system"
+          - "Create report visualization components"
+          - "Implement report customization options"
+        completion_criteria: "System generating and delivering customized periodic reports"
+
+      # Activity Type Analysis
+      - id: activity_type_analysis
+        name: "Activity Type Analysis"
+        description: "Implement analysis by activity type"
+        steps:
+          - "Create activity classification algorithms"
+          - "Implement activity-specific analytics"
+          - "Create activity comparison visualizations"
+          - "Implement trend analysis by activity"
+        completion_criteria: "System analyzing and presenting data by activity type"
+
+      # Export Functionality
+      - id: export_functionality
+        name: "Export Functionality"
+        description: "Implement data export functionality"
+        steps:
+          - "Create CSV export functionality"
+          - "Implement PDF report generation"
+          - "Create export scheduling options"
+          - "Implement data selection for export"
+        completion_criteria: "Users able to export their data in multiple formats"
+
+    checkpoints:
+      - id: data_pipeline_operational
+        name: "Data Pipeline Operational"
+        criteria:
+          - "Data flowing into BigQuery"
+          - "Aggregation jobs running successfully"
+          - "Data validation ensuring quality"
+
+      - id: reports_generating
+        name: "Reports Generating"
+        criteria:
+          - "Weekly reports generating correctly"
+          - "Monthly reports generating correctly"
+          - "Reports visually appealing and informative"
+
+      - id: activity_analysis_working
+        name: "Activity Analysis Working"
+        criteria:
+          - "Activities correctly classified"
+          - "Activity-specific metrics calculated"
+          - "Comparative analysis working"
+
+      - id: export_options_available
+        name: "Export Options Available"
+        criteria:
+          - "CSV export functioning"
+          - "PDF reports generating correctly"
+          - "Export options accessible in UI"
+
+    deliverables:
+      - "Data aggregation and analytics pipeline"
+      - "Periodic reporting system"
+      - "Activity-based analysis functionality"
+      - "Data export functionality"
+
+  # ======================================================
+  # Phase 7: Performance Optimization and Scaling
+  # ======================================================
+  - id: performance_optimization
+    name: "Performance Optimization and Scaling"
+    description: "Optimize performance and prepare for scaling"
+    estimated_duration: "3 weeks"
+    priority: "Medium"
+    dependencies: ["core_features_implementation", "ai_features_implementation", "subscription_and_payment"]
+
+    tasks:
+      # Frontend Performance
+      - id: frontend_performance
+        name: "Frontend Performance Optimization"
+        description: "Optimize frontend application performance"
+        steps:
+          - "Conduct performance profiling"
+          - "Optimize widget rebuilds"
+          - "Implement lazy loading for heavy UI"
+          - "Optimize image and asset loading"
+        completion_criteria: "Frontend performance meeting or exceeding benchmarks"
+
+      # Backend Scaling
+      - id: backend_scaling
+        name: "Backend Scaling"
+        description: "Prepare backend services for scaling"
+        steps:
+          - "Implement autoscaling configurations"
+          - "Optimize database queries"
+          - "Implement caching strategies"
+          - "Create load balancing configuration"
+        completion_criteria: "Backend services capable of scaling based on load"
+
+      # API Optimization
+      - id: api_optimization
+        name: "API Optimization"
+        description: "Optimize API performance and structure"
+        steps:
+          - "Implement GraphQL for optimized queries"
+          - "Create API versioning strategy"
+          - "Optimize API response sizes"
+          - "Implement request batching"
+        completion_criteria: "API performance optimized and structure future-proofed"
+
+      # Cost Optimization
+      - id: cost_optimization
+        name: "Cost Optimization"
+        description: "Optimize cloud resource costs"
+        steps:
+          - "Analyze current cloud spending"
+          - "Implement resource scheduling"
+          - "Right-size compute resources"
+          - "Create cost monitoring and alerting"
+        completion_criteria: "Cloud costs optimized while maintaining performance"
+
+    checkpoints:
+      - id: frontend_performance_improved
+        name: "Frontend Performance Improved"
+        criteria:
+          - "UI responsiveness meeting targets"
+          - "Memory usage optimized"
+          - "Animation performance smooth"
+          - "Startup time optimized"
+
+      - id: backend_ready_for_scale
+        name: "Backend Ready for Scale"
+        criteria:
+          - "Autoscaling correctly configured"
+          - "Database performance optimized"
+          - "Caching strategy implemented"
+
+      - id: api_performance_optimized
+        name: "API Performance Optimized"
+        criteria:
+          - "Response times meeting targets"
+          - "API structure optimized"
+          - "Bandwidth usage optimized"
+
+      - id: costs_under_control
+        name: "Costs Under Control"
+        criteria:
+          - "Cloud costs within budget"
+          - "Resource utilization optimized"
+          - "Cost monitoring in place"
+
+    deliverables:
+      - "Optimized frontend application"
+      - "Scalable backend architecture"
+      - "Efficient API structure"
+      - "Cost-optimized cloud infrastructure"
+
+  # ======================================================
+  # Phase 8: Monitoring and Operations
+  # ======================================================
+  - id: monitoring_and_operations
+    name: "Monitoring and Operations"
+    description: "Implement comprehensive monitoring and operational tools"
+    estimated_duration: "2 weeks"
+    priority: "Medium"
+    dependencies: ["performance_optimization"]
+
+    tasks:
+      # Application Monitoring
+      - id: application_monitoring
+        name: "Application Monitoring"
+        description: "Implement application performance monitoring"
+        steps:
+          - "Set up application insights"
+          - "Create custom metrics"
+          - "Implement log aggregation"
+          - "Create performance dashboards"
+        completion_criteria: "Comprehensive application monitoring in place"
+
+      # Error Tracking
+      - id: error_tracking
+        name: "Error Tracking"
+        description: "Implement error tracking and reporting"
+        steps:
+          - "Set up error monitoring service"
+          - "Implement crash reporting in mobile app"
+          - "Create alert rules and notifications"
+          - "Implement error prioritization"
+        completion_criteria: "Error tracking system capturing and prioritizing issues"
+
+      # User Analytics
+      - id: user_analytics
+        name: "User Analytics"
+        description: "Implement user behavior analytics"
+        steps:
+          - "Set up Firebase Analytics"
+          - "Create custom event tracking"
+          - "Implement user journey mapping"
+          - "Create conversion funnels"
+        completion_criteria: "User analytics providing actionable insights"
+
+      # Operational Runbooks
+      - id: operational_runbooks
+        name: "Operational Runbooks"
+        description: "Create operational runbooks for common scenarios"
+        steps:
+          - "Document common operational tasks"
+          - "Create incident response procedures"
+          - "Implement automation for routine tasks"
+          - "Create escalation paths"
+        completion_criteria: "Comprehensive operational documentation and automation"
+
+    checkpoints:
+      - id: monitoring_operational
+        name: "Monitoring Operational"
+        criteria:
+          - "Application metrics being collected"
+          - "Dashboards providing visibility"
+          - "Alerts properly configured"
+
+      - id: error_handling_robust
+        name: "Error Handling Robust"
+        criteria:
+          - "Errors being captured correctly"
+          - "Error reports actionable"
+          - "Error notifications working"
+
+      - id: analytics_providing_insights
+        name: "Analytics Providing Insights"
+        criteria:
+          - "User behavior data being collected"
+          - "Conversion funnels defined"
+          - "Analytics integrated into product decisions"
+
+      - id: operations_documented
+        name: "Operations Documented"
+        criteria:
+          - "Runbooks created for common scenarios"
+          - "Automation implemented for routine tasks"
+          - "Documentation accessible to team"
+
+    deliverables:
+      - "Application performance monitoring"
+      - "Error tracking and reporting system"
+      - "User behavior analytics"
+      - "Operational runbooks and automation"
+
+  # ======================================================
+  # Phase 9: Security and Compliance
+  # ======================================================
+  - id: security_and_compliance
+    name: "Security and Compliance"
+    description: "Implement security measures and ensure compliance"
+    estimated_duration: "2 weeks"
+    priority: "High"
+    dependencies: ["core_features_implementation", "subscription_and_payment"]
+
+    tasks:
+      # Security Assessment
+      - id: security_assessment
+        name: "Security Assessment"
+        description: "Conduct security assessment of application"
+        steps:
+          - "Perform threat modeling"
+          - "Conduct code security review"
+          - "Implement static code analysis"
+          - "Conduct penetration testing"
+        completion_criteria: "Security vulnerabilities identified and remediated"
+
+      # Data Privacy
+      - id: data_privacy
+        name: "Data Privacy"
+        description: "Ensure data privacy compliance"
+        steps:
+          - "Implement data minimization"
+          - "Create data retention policies"
+          - "Implement consent management"
+          - "Create privacy policy documentation"
+        completion_criteria: "Application compliant with relevant data privacy regulations"
+
+      # Secure Communication
+      - id: secure_communication
+        name: "Secure Communication"
+        description: "Ensure secure communication throughout the app"
+        steps:
+          - "Implement HTTPS for all communications"
+          - "Create API security with JWT"
+          - "Implement certificate pinning"
+          - "Create secure storage for sensitive data"
+        completion_criteria: "All communications secured appropriately"
+
+      # Authentication Security
+      - id: authentication_security
+        name: "Authentication Security"
+        description: "Enhance authentication security"
+        steps:
+          - "Implement multi-factor authentication"
+          - "Create secure password policies"
+          - "Implement brute force protection"
+          - "Create account recovery processes"
+        completion_criteria: "Authentication system meeting security best practices"
+
+    checkpoints:
+      - id: security_vulnerabilities_addressed
+        name: "Security Vulnerabilities Addressed"
+        criteria:
+          - "Threat modeling completed"
+          - "Security review findings addressed"
+          - "Penetration testing issues resolved"
+
+      - id: privacy_compliance_achieved
+        name: "Privacy Compliance Achieved"
+        criteria:
+          - "Data minimization implemented"
+          - "Consent management working"
+          - "Privacy policy updated"
+
+      - id: communications_secured
+        name: "Communications Secured"
+        criteria:
+          - "All network traffic encrypted"
+          - "API security measures in place"
+          - "Sensitive data properly protected"
+
+      - id: authentication_hardened
+        name: "Authentication Hardened"
+        criteria:
+          - "MFA offered to users"
+          - "Password policies enforced"
+          - "Brute force protection working"
+
+    deliverables:
+      - "Security assessment report and remediation"
+      - "Data privacy compliance implementation"
+      - "Secure communication protocols"
+      - "Enhanced authentication security"
+
+  # ======================================================
+  # Phase 10: Localization and Market Expansion
+  # ======================================================
+  - id: localization_and_market_expansion
+    name: "Localization and Market Expansion"
+    description: "Prepare application for international markets"
+    estimated_duration: "2 weeks"
+    priority: "Low"
+    dependencies: ["core_features_implementation", "ai_features_implementation", "subscription_and_payment"]
+
+    tasks:
+      # Internationalization Framework
+      - id: internationalization_framework
+        name: "Internationalization Framework"
+        description: "Implement internationalization framework"
+        steps:
+          - "Set up Flutter intl package"
+          - "Create translation workflows"
+          - "Implement language switching"
+          - "Create localized resource handling"
+        completion_criteria: "Internationalization framework implemented and working"
+
+      # Japanese Localization
+      - id: japanese_localization
+        name: "Japanese Localization"
+        description: "Implement Japanese language support"
+        steps:
+          - "Translate UI strings to Japanese"
+          - "Create Japanese language assets"
+          - "Test Japanese UI layout"
+          - "Localize AI responses for Japanese"
+        completion_criteria: "Application fully functional in Japanese"
+
+      # English Localization
+      - id: english_localization
+        name: "English Localization"
+        description: "Implement English language support"
+        steps:
+          - "Finalize English UI strings"
+          - "Create English language assets"
+          - "Test English UI layout"
+          - "Localize AI responses for English"
+        completion_criteria: "Application fully functional in English"
+
+      # Regional Settings
+      - id: regional_settings
+        name: "Regional Settings"
+        description: "Implement region-specific settings"
+        steps:
+          - "Create unit system switching (metric/imperial)"
+          - "Implement date/time format localization"
+          - "Create region-specific content filtering"
+          - "Implement regional pricing"
+        completion_criteria: "Application adapting correctly to regional settings"
+
+    checkpoints:
+      - id: i18n_framework_working
+        name: "I18n Framework Working"
+        criteria:
+          - "Translation system implemented"
+          - "Language switching functional"
+          - "Resource localization working"
+
+      - id: japanese_support_complete
+        name: "Japanese Support Complete"
+        criteria:
+          - "UI fully translated to Japanese"
+          - "Japanese layout working on all screens"
+          - "AI responding appropriately in Japanese"
+
+      - id: english_support_complete
+        name: "English Support Complete"
+        criteria:
+          - "UI fully translated to English"
+          - "English layout working on all screens"
+          - "AI responding appropriately in English"
+
+      - id: regional_adaptation_working
+        name: "Regional Adaptation Working"
+        criteria:
+          - "Unit system switching working"
+          - "Date/time formats localized"
+          - "Regional pricing implemented"
+
+    deliverables:
+      - "Internationalization framework"
+      - "Japanese language support"
+      - "English language support"
+      - "Region-specific adaptations"
+
+automations:
+  # Script to check the status of a phase based on checkpoints
+  - id: phase_status_checker
+    name: "Phase Status Checker"
+    description: "Checks the status of a phase based on its checkpoints"
+    trigger: "Manual or scheduled"
+    language: "JavaScript"
+    code: |
+      // Sample automation script to check phase status
+      function checkPhaseStatus(phaseId) {
+        const phase = getPhaseById(phaseId);
+        const checkpoints = phase.checkpoints;
+
+        let completedCheckpoints = 0;
+        let totalCriteria = 0;
+        let metCriteria = 0;
+
+        for (const checkpoint of checkpoints) {
+          const checkpointStatus = getCheckpointStatus(checkpoint.id);
+          if (checkpointStatus.completed) {
+            completedCheckpoints++;
+          }
+
+          totalCriteria += checkpoint.criteria.length;
+          metCriteria += checkpointStatus.criteriaMetCount;
+        }
+
+        const checkpointCompletion = (completedCheckpoints / checkpoints.length) * 100;
+        const criteriaCompletion = (metCriteria / totalCriteria) * 100;
+
+        return {
+          phaseId,
+          phaseName: phase.name,
+          checkpointCompletion: `${checkpointCompletion.toFixed(1)}%`,
+          criteriaCompletion: `${criteriaCompletion.toFixed(1)}%`,
+          status: checkpointCompletion === 100 ? 'Complete' : 'In Progress'
+        };
+      }
+
+  # Script to generate weekly progress report
+  - id: progress_report_generator
+    name: "Progress Report Generator"
+    description: "Generates a weekly progress report"
+    trigger: "Scheduled (Weekly)"
+    language: "JavaScript"
+    code: |
+      // Sample automation script to generate progress report
+      function generateWeeklyReport() {
+        const phases = getAllPhases();
+        const completedPhases = phases.filter(phase => getPhaseStatus(phase.id).status === 'Complete');
+        const inProgressPhases = phases.filter(phase => getPhaseStatus(phase.id).status === 'In Progress');
+        const pendingPhases = phases.filter(phase => getPhaseStatus(phase.id).status === 'Pending');
+
+        const report = {
+          date: new Date().toISOString().split('T')[0],
+          projectProgress: {
+            completedPhases: completedPhases.length,
+            inProgressPhases: inProgressPhases.length,
+            pendingPhases: pendingPhases.length,
+            overallCompletion: `${(completedPhases.length / phases.length * 100).toFixed(1)}%`
+          },
+          inProgressDetails: inProgressPhases.map(phase => {
+            const status = getPhaseStatus(phase.id);
+            return {
+              phaseName: phase.name,
+              completion: status.criteriaCompletion,
+              recentProgress: getRecentProgress(phase.id),
+              blockers: getBlockers(phase.id)
+            };
+          }),
+          nextMilestones: getUpcomingMilestones()
+        };
+
+        return report;
+      }
+
+  # Script to generate dependency graph
+  - id: dependency_graph_generator
+    name: "Dependency Graph Generator"
+    description: "Generates a visual dependency graph of phases"
+    trigger: "On plan update"
+    language: "JavaScript"
+    code: |
+      // Sample automation script to generate dependency graph
+      function generateDependencyGraph() {
+        const phases = getAllPhases();
+
+        // Create nodes for each phase
+        const nodes = phases.map(phase => ({
+          id: phase.id,
+          label: phase.name,
+          status: getPhaseStatus(phase.id).status
+        }));
+
+        // Create edges based on dependencies
+        const edges = [];
+        for (const phase of phases) {
+          if (phase.dependencies && phase.dependencies.length > 0) {
+            for (const depId of phase.dependencies) {
+              edges.push({
+                from: depId,
+                to: phase.id
+              });
+            }
+          }
+        }
+
+        return {
+          nodes,
+          edges
+        };
+      }
+
+llm_functions:
+  # Function to suggest next tasks based on current project state
+  - id: task_suggester
+    name: "Task Suggester"
+    description: "Suggests next tasks based on current project state"
+    input_schema:
+      type: "object"
+      properties:
+        currentPhase:
+          type: "string"
+          description: "ID of the current phase"
+        completedTasks:
+          type: "array"
+          items:
+            type: "string"
+          description: "IDs of completed tasks"
+        teamCapacity:
+          type: "object"
+          properties:
+            frontend:
+              type: "number"
+              description: "Available frontend developer capacity in person-days"
+            backend:
+              type: "number"
+              description: "Available backend developer capacity in person-days"
+            devops:
+              type: "number"
+              description: "Available DevOps capacity in person-days"
+    output_schema:
+      type: "object"
+      properties:
+        suggestedTasks:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              taskId:
+                type: "string"
+              taskName:
+                type: "string"
+              priority:
+                type: "string"
+              assignedRole:
+                type: "string"
+              estimatedEffort:
+                type: "number"
+              rationale:
+                type: "string"
+    prompt_template: |
+      Based on the current project state where we are in phase {currentPhase} with the following tasks already completed: {completedTasks},
+      and with team capacity of {teamCapacity.frontend} frontend developer days, {teamCapacity.backend} backend developer days, and {teamCapacity.devops} DevOps days,
+      suggest the most optimal tasks to work on next.
+
+      Consider dependencies between tasks, team capacity, and project priorities.
+      Provide a rationale for each suggested task explaining why it should be prioritized now.
+
+  # Function to analyze project risks
+  - id: risk_analyzer
+    name: "Risk Analyzer"
+    description: "Analyzes project risks based on current progress"
+    input_schema:
+      type: "object"
+      properties:
+        phaseStatuses:
+          type: "object"
+          additionalProperties:
+            type: "object"
+            properties:
+              completion:
+                type: "number"
+              daysRemaining:
+                type: "number"
+        teamVelocity:
+          type: "object"
+          properties:
+            planned:
+              type: "number"
+            actual:
+              type: "number"
+    output_schema:
+      type: "object"
+      properties:
+        riskLevel:
+          type: "string"
+          enum: ["Low", "Medium", "High", "Critical"]
+        risks:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              category:
+                type: "string"
+              description:
+                type: "string"
+              impact:
+                type: "string"
+              mitigation:
+                type: "string"
+        schedule_forecast:
+          type: "object"
+          properties:
+            onTrack:
+              type: "boolean"
+            estimatedDelay:
+              type: "number"
+            recommendedActions:
+              type: "array"
+              items:
+                type: "string"
+    prompt_template: |
+      Analyze the current project progress where phases have the following completion percentages and days remaining: {phaseStatuses},
+      and the team velocity is {teamVelocity.actual} compared to the planned velocity of {teamVelocity.planned}.
+
+      Identify risks to the project based on this data, categorize them, and suggest mitigation strategies.
+      Also provide a schedule forecast indicating whether the project is on track, any estimated delays, and recommended actions.
+
+  # Function to generate code architecture recommendations
+  - id: architecture_advisor
+    name: "Architecture Advisor"
+    description: "Provides code architecture recommendations for implementation tasks"
+    input_schema:
+      type: "object"
+      properties:
+        taskId:
+          type: "string"
+        taskName:
+          type: "string"
+        taskDescription:
+          type: "string"
+        platform:
+          type: "string"
+          enum: ["Flutter", "Node.js", "GCP", "Firebase"]
+        existingComponents:
+          type: "array"
+          items:
+            type: "string"
+    output_schema:
+      type: "object"
+      properties:
+        architecture_overview:
+          type: "string"
+        component_structure:
+          type: "object"
+          additionalProperties:
+            type: "object"
+        code_samples:
+          type: "object"
+          additionalProperties:
+            type: "string"
+        design_patterns:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              pattern:
+                type: "string"
+              rationale:
+                type: "string"
+    prompt_template: |
+      For the task "{taskName}" ({taskId}) described as "{taskDescription}" on the {platform} platform,
+      with existing components {existingComponents}, provide detailed architecture recommendations.
+
+      Include an architecture overview explaining the approach, component structure detailing how components should interact,
+      code samples illustrating key implementation aspects, and recommended design patterns with rationale.
+
+      The recommendations should follow best practices for the {platform} platform and ensure maintainability, scalability, and performance.
+
+  # Function to provide RevenueCat integration recommendations
+  - id: revenuecat_advisor
+    name: "RevenueCat Implementation Advisor"
+    description: "Provides specific RevenueCat implementation recommendations for subscription features"
+    input_schema:
+      type: "object"
+      properties:
+        feature:
+          type: "string"
+          description: "The specific subscription feature being implemented"
+          enum: ["initialization", "purchase", "restore", "subscription_status", "paywall", "analytics"]
+        platform:
+          type: "string"
+          description: "The target platform"
+          enum: ["iOS", "Android", "cross-platform"]
+        complexity:
+          type: "string"
+          description: "The desired complexity level of the implementation"
+          enum: ["basic", "standard", "advanced"]
+    output_schema:
+      type: "object"
+      properties:
+        implementation_approach:
+          type: "string"
+        code_example:
+          type: "string"
+        common_pitfalls:
+          type: "array"
+          items:
+            type: "string"
+        best_practices:
+          type: "array"
+          items:
+            type: "string"
+        testing_strategy:
+          type: "string"
+    prompt_template: |
+      Provide detailed RevenueCat implementation recommendations for the {feature} feature on {platform}
+      platform with {complexity} complexity.
+
+      Include a clear implementation approach explaining the strategy, a code example showing the
+      implementation, common pitfalls to avoid, best practices to follow, and a testing strategy
+      for verifying the implementation.
+
+      The recommendations should be based on the latest RevenueCat Flutter SDK best practices
+      and should consider cross-platform compatibility where applicable.

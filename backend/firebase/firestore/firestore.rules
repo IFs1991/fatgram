@@ -1,0 +1,90 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 認証ユーザーかどうかをチェック
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // 指定されたユーザーIDが現在のユーザーかどうかをチェック
+    function isUser(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // リクエストデータが有効なユーザーデータかどうかをチェック
+    function isValidUserData(data) {
+      return data.size() <= 10
+        && data.keys().hasOnly(['displayName', 'email', 'profileImageUrl', 'createdAt', 'updatedAt', 'subscriptionTier', 'goals', 'settings', 'lastSyncTimestamp', 'deviceInfo'])
+        && (data.displayName == null || data.displayName is string)
+        && (data.email == null || data.email is string)
+        && (data.profileImageUrl == null || data.profileImageUrl is string)
+        && (data.subscriptionTier == null || data.subscriptionTier is string);
+    }
+
+    // リクエストデータが有効なアクティビティデータかどうかをチェック
+    function isValidActivityData(data) {
+      return data.size() <= 15
+        && data.keys().hasOnly(['activityId', 'userId', 'activityType', 'startTime', 'endTime', 'caloriesBurned', 'fatBurnedGrams', 'heartRateAvg', 'heartRateMax', 'steps', 'distance', 'createdAt', 'updatedAt', 'source', 'heartRateData'])
+        && data.activityId is string
+        && data.userId is string
+        && data.activityType is string
+        && data.startTime is timestamp
+        && data.endTime is timestamp
+        && data.caloriesBurned is number
+        && data.fatBurnedGrams is number
+        && (data.heartRateAvg == null || data.heartRateAvg is number)
+        && (data.heartRateMax == null || data.heartRateMax is number)
+        && (data.steps == null || data.steps is number)
+        && (data.distance == null || data.distance is number);
+    }
+
+    // ユーザーコレクション
+    match /users/{userId} {
+      allow read: if isAuthenticated() && isUser(userId);
+      allow create: if isAuthenticated() && isUser(userId) && isValidUserData(request.resource.data);
+      allow update: if isAuthenticated() && isUser(userId) && isValidUserData(request.resource.data);
+      allow delete: if isAuthenticated() && isUser(userId);
+
+      // ユーザー設定サブコレクション
+      match /settings/{settingId} {
+        allow read: if isAuthenticated() && isUser(userId);
+        allow write: if isAuthenticated() && isUser(userId);
+      }
+    }
+
+    // アクティビティコレクション
+    match /activities/{activityId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create: if isAuthenticated() && isUser(request.resource.data.userId) && isValidActivityData(request.resource.data);
+      allow update: if isAuthenticated() && isUser(resource.data.userId) && isValidActivityData(request.resource.data);
+      allow delete: if isAuthenticated() && isUser(resource.data.userId);
+    }
+
+    // 会話コレクション
+    match /conversations/{conversationId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create: if isAuthenticated() && isUser(request.resource.data.userId);
+      allow update: if isAuthenticated() && isUser(resource.data.userId);
+      allow delete: if isAuthenticated() && isUser(resource.data.userId);
+
+      // 会話メッセージサブコレクション
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() && isUser(get(/databases/$(database)/documents/conversations/$(conversationId)).data.userId);
+        allow create: if isAuthenticated() && isUser(get(/databases/$(database)/documents/conversations/$(conversationId)).data.userId);
+        allow update: if false; // メッセージは更新不可
+        allow delete: if isAuthenticated() && isUser(get(/databases/$(database)/documents/conversations/$(conversationId)).data.userId);
+      }
+    }
+
+    // サブスクリプションコレクション
+    match /subscriptions/{subscriptionId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create, update, delete: if false; // サーバーサイドのみ更新可能
+    }
+
+    // その他のコレクションはデフォルトで拒否
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

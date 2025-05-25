@@ -1,0 +1,109 @@
+name: fatgram
+description: "スマートウォッチと連携して脂肪燃焼量をリアルタイム表示・分析するアプリ。AIによるパーソナルアドバイス機能搭載。"
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # UI関連
+  cupertino_icons: ^1.0.6
+  flutter_svg: ^2.0.7
+  fl_chart: ^0.65.0
+  shimmer: ^3.0.0
+  cached_network_image: ^3.3.0
+  lottie: ^2.6.0
+  flutter_markdown: ^0.6.18
+  flutter_chat_ui: ^1.6.10
+  flutter_chat_types: ^3.6.2
+
+  # 状態管理
+  flutter_riverpod: ^2.4.0
+  riverpod_annotation: ^2.2.1
+
+  # ローカルストレージ
+  shared_preferences: ^2.2.1
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  path_provider: ^2.1.1
+
+  # ネットワーク
+  http: ^1.1.0
+  connectivity_plus: ^5.0.1
+  dio: ^5.4.0
+  retrofit: ^4.1.0
+
+  # ヘルスデータ連携
+  health: ^12.2.0
+  # health_connect: ^0.2.3 # 一時的にコメントアウト
+
+  # 購読管理
+  purchases_flutter: ^6.5.0
+
+  # 認証
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
+  google_sign_in: ^6.1.5
+  sign_in_with_apple: ^5.0.0
+
+  # Firestore
+  cloud_firestore: ^4.13.1
+
+  # Analytics
+  firebase_analytics: ^10.7.4
+  firebase_crashlytics: ^3.4.8
+
+  # AI機能関連
+  google_generative_ai: ^0.4.7
+  webview_flutter: ^4.5.0
+  url_launcher: ^6.2.4
+
+  # 多言語対応
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+
+  # 開発サポート
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  logger: ^2.0.2
+  uuid: ^4.5.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+  # 自動生成ツール
+  build_runner: ^2.4.11
+  freezed: ^2.5.2
+  json_serializable: ^6.7.1
+  riverpod_generator: ^2.3.3
+  retrofit_generator: ^8.2.1
+
+  # テストツール
+  mockito: ^5.4.2
+  mocktail: ^1.0.0
+
+# Flutter の設定
+flutter:
+  uses-material-design: true
+
+  # アセット
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animations/
+
+  # フォント
+  fonts:
+    - family: Noto Sans JP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Regular.otf
+        - asset: assets/fonts/NotoSansJP-Medium.otf
+          weight: 500
+        - asset: assets/fonts/NotoSansJP-Bold.otf
+          weight: 700
