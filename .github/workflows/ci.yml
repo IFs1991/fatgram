@@ -22,16 +22,20 @@ jobs:
 
       # 依存関係の取得
       - name: Get dependencies
+        working-directory: ./mobile
         run: flutter pub get
 
       # コードフォーマットのチェック (オプション)
       # - name: Check formatting
+      #   working-directory: ./mobile
       #   run: dart format --output=none --set-exit-if-changed .
 
       # 静的解析
       - name: Analyze project dependencies
+        working-directory: ./mobile
         run: flutter analyze
 
       # テストの実行
       - name: Run tests
+        working-directory: ./mobile
         run: flutter test

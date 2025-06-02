@@ -69,12 +69,14 @@ fatgram/
    ```bash
    cd mobile
    flutter pub get
+   cd ..
    ```
 
 3. Firebase設定:
    ```bash
-   cd ../backend/firebase/functions
+   cd backend/firebase/functions
    npm install
+   cd ../../..
    ```
 
 4. ローカル開発サーバーの起動:
