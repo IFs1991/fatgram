@@ -29,11 +29,11 @@ class GeminiApiClient {
       safetySettings: [
         genai.SafetySetting(
           genai.HarmCategory.harassment,
-          genai.HarmBlockThreshold.mediumAndAbove,
+          genai.HarmBlockThreshold.medium,
         ),
         genai.SafetySetting(
           genai.HarmCategory.dangerousContent,
-          genai.HarmBlockThreshold.mediumAndAbove,
+          genai.HarmBlockThreshold.medium,
         ),
       ],
     );
@@ -47,11 +47,11 @@ class GeminiApiClient {
       safetySettings: [
         genai.SafetySetting(
           genai.HarmCategory.harassment,
-          genai.HarmBlockThreshold.mediumAndAbove,
+          genai.HarmBlockThreshold.medium,
         ),
         genai.SafetySetting(
           genai.HarmCategory.dangerousContent,
-          genai.HarmBlockThreshold.mediumAndAbove,
+          genai.HarmBlockThreshold.medium,
         ),
       ],
     );
@@ -68,8 +68,8 @@ class GeminiApiClient {
         final content = item['content'] as String;
 
         return genai.Content(
-          parts: [genai.TextPart(text: content)],
-          role: role == 'user' ? genai.Role.user : genai.Role.model,
+          role == 'user' ? 'user' : 'model',
+          [genai.TextPart(content)],
         );
       }).toList();
 
@@ -82,8 +82,8 @@ class GeminiApiClient {
         contents.insert(
           0,
           genai.Content(
-            parts: [genai.TextPart(text: instructions)],
-            role: genai.Role.system,
+            'system',
+            [genai.TextPart(instructions)],
           ),
         );
       }
@@ -112,13 +112,10 @@ class GeminiApiClient {
     Map<String, String>? systemInstructions,
   }) async {
     try {
-      final parts = <genai.Part>[genai.TextPart(text: prompt)];
+      final parts = <genai.Part>[genai.TextPart(prompt)];
       parts.addAll(imageParts);
 
-      final content = genai.Content(
-        role: genai.Role.user,
-        parts: parts,
-      );
+      final content = genai.Content('user', parts);
 
       final response = await visionModel.generateContent([content]);
       final responseText = response.text;

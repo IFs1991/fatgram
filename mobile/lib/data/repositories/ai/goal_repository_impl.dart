@@ -5,7 +5,6 @@ import 'package:fatgram/data/datasources/ai/gemini_api_client.dart';
 import 'package:fatgram/domain/models/ai/user_goal.dart';
 import 'package:fatgram/domain/repositories/ai/goal_repository.dart';
 import 'package:logger/logger.dart';
-import 'package:google_generative_ai/google_generative_ai.dart' as genai;
 
 final goalRepositoryProvider = Provider<GoalRepository>((ref) {
   final geminiClient = ref.watch(geminiClientProvider);
@@ -41,19 +40,19 @@ class GoalRepositoryImpl implements GoalRepository {
       };
 
       // AI経由でゴール提案を生成
-      final response = await apiClient.generateChatResponse(
-        history: [
-          genai.Content(
-            role: 'user',
-            parts: [genai.TextPart(text: 'Suggest $limit personalized fitness goals based on my profile and activity data.')],
-          ),
-        ],
-        systemInstructions: {
-          'role': 'You are a fitness goal setting assistant that helps users set realistic and achievable goals.',
-          'format': 'Return goals as a JSON array with objects having title, description, targetValue, and timeframe fields.',
-          'context': contextData.toString(),
-        },
-      );
+      // final response = await apiClient.generateChatResponse(
+      //   history: [
+      //     genai.Content(
+      //       role: 'user',
+      //       parts: [genai.TextPart(text: 'Suggest $limit personalized fitness goals based on my profile and activity data.')],
+      //     ),
+      //   ],
+      //   systemInstructions: {
+      //     'role': 'You are a fitness goal setting assistant that helps users set realistic and achievable goals.',
+      //     'format': 'Return goals as a JSON array with objects having title, description, targetValue, and timeframe fields.',
+      //     'context': contextData.toString(),
+      //   },
+      // );
 
       // レスポンスをパースしてゴールリストを作成（実際のAPIでは適切な処理が必要）
       // 簡略化のため、ダミーデータを生成

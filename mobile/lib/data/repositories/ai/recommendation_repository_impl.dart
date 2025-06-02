@@ -5,7 +5,6 @@ import 'package:fatgram/data/datasources/ai/gemini_api_client.dart';
 import 'package:fatgram/domain/models/ai/user_recommendation.dart';
 import 'package:fatgram/domain/repositories/ai/recommendation_repository.dart';
 import 'package:logger/logger.dart';
-import 'package:google_generative_ai/google_generative_ai.dart' as genai;
 
 final recommendationRepositoryProvider = Provider<RecommendationRepository>((ref) {
   final geminiClient = ref.watch(geminiClientProvider);
@@ -38,11 +37,11 @@ class RecommendationRepositoryImpl implements RecommendationRepository {
     try {
       // ユーザープロファイルや活動データなどのコンテキスト情報を準備
       // 実際のアプリでは、ユーザーのアクティビティデータなどを取得して利用
-      final contextData = {
-        'recommendationType': type.toString(),
-        'limit': limit.toString(),
-        ...?filters?.map((key, value) => MapEntry(key.toString(), value.toString())),
-      };
+      // final contextData = {
+      //   'recommendationType': type.toString(),
+      //   'limit': limit.toString(),
+      //   ...?filters?.map((key, value) => MapEntry(key.toString(), value.toString())),
+      // };
 
       // 推奨タイプに応じたプロンプトを作成
       String prompt;
@@ -62,19 +61,19 @@ class RecommendationRepositoryImpl implements RecommendationRepository {
       }
 
       // AI経由で推奨を生成
-      final response = await apiClient.generateChatResponse(
-        history: [
-          genai.Content(
-            role: 'user',
-            parts: [genai.TextPart(text: prompt)],
-          ),
-        ],
-        systemInstructions: {
-          'role': 'You are a fitness recommendations generator that creates personalized suggestions.',
-          'format': 'Return recommendations as a JSON array with objects having title, description, and confidence fields.',
-          'context': contextData.toString(),
-        },
-      );
+      // final response = await apiClient.generateChatResponse(
+      //   history: [
+      //     genai.Content(
+      //       role: 'user',
+      //       parts: [genai.TextPart(text: prompt)],
+      //     ),
+      //   ],
+      //   systemInstructions: {
+      //     'role': 'You are a fitness recommendations generator that creates personalized suggestions.',
+      //     'format': 'Return recommendations as a JSON array with objects having title, description, and confidence fields.',
+      //     'context': contextData.toString(), // This would cause an error if contextData is commented out, but the whole block is commented.
+      //   },
+      // );
 
       // レスポンスをパースして推奨リストを作成（実際のAPIでは適切な処理が必要）
       // 簡略化のため、ダミーデータを生成

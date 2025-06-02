@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_generative_ai/google_generative_ai.dart' as genai;
 import 'package:uuid/uuid.dart';
 import 'package:fatgram/core/error/exceptions.dart';
 import 'package:fatgram/data/datasources/ai/gemini_api_client.dart';
@@ -206,7 +205,7 @@ class AIChatRepositoryImpl implements AIChatRepository {
   }
 
   // ChatMessageをGemini AIのContent形式に変換するヘルパーメソッド
-  List<genai.Content> _convertToGeminiHistory(List<ChatMessage> messages) {
+  List<Map<String, dynamic>> _convertToGeminiHistory(List<ChatMessage> messages) {
     // システムメッセージは含めない（別途systemInstructionsとして追加）
     final filteredMessages = messages
         .where((m) => m.role != ChatMessageRole.system)
@@ -222,13 +221,10 @@ class AIChatRepositoryImpl implements AIChatRepository {
           role = 'model';
           break;
         default:
-          role = 'user'; // デフォルトはユーザー
+          // Or handle as an error, though 'user' might be a safe default
+          role = 'user';
       }
-
-      return genai.Content(
-        role: role,
-        parts: [genai.TextPart(text: message.content)],
-      );
+      return {'role': role, 'content': message.content};
     }).toList();
   }
 }
