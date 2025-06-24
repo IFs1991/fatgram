@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter:*)",
+      "Bash(ls:*)",
+      "Bash(/mnt/c/Users/Public/development/flutter/flutter/bin/flutter --version)",
+      "Bash(dos2unix:*)",
+      "Bash(sed:*)",
+      "Bash(find:*)",
+      "Bash(/mnt/c/Users/Public/development/flutter/flutter/bin/cache/dart-sdk/bin/dart.exe --version)",
+      "Bash(/mnt/c/Users/Public/development/flutter/flutter/bin/cache/dart-sdk/bin/dart.exe pub get)",
+      "Bash(FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn /mnt/c/Users/Public/development/flutter/flutter/bin/flutter.bat pub get)",
+      "Bash(/mnt/c/Users/Public/development/flutter/flutter/bin/flutter pub get)",
+      "Bash(/mnt/c/Users/Public/development/flutter/flutter/bin/flutter analyze lib/)",
+      "Bash(/mnt/c/Users/Public/development/flutter/flutter/bin/flutter doctor)",
+      "Bash(cat:*)",
+      "Bash(dart:*)"
+    ],
+    "deny": []
+  }
+}
