@@ -1,0 +1,649 @@
+# FatGram TDD改善計画書
+
+project_name: "FatGram改善プロジェクト"
+methodology: "Test-Driven Development (TDD)"
+duration: "12週間"
+team_size: "3-5人"
+
+phases:
+  - phase_1:
+      name: "基盤整備とテスト環境構築"
+      duration: "2週間"
+      status: "完了"
+      goals:
+        - "テスト環境の構築"
+        - "CI/CDパイプラインの設定"
+        - "環境変数管理の実装"
+
+      tasks:
+        - task_1_1:
+            name: "テストフレームワーク設定"
+            status: "完了"
+            test_files:
+              - "test/test_helper.dart # 新規作成"
+              - "test/fixtures/fixture_reader.dart # 新規作成"
+            implementation_files:
+              - "pubspec.yaml # mocktail, faker追加"
+              - "test/fixtures/*.json # テストデータ作成"
+            tests:
+              - "テストヘルパー関数の動作確認"
+              - "フィクスチャーの読み込みテスト"
+
+        - task_1_2:
+            name: "環境変数管理"
+            status: "完了"
+            test_files:
+              - "test/core/config/env_config_test.dart # 新規作成"
+            implementation_files:
+              - "lib/core/config/env_config.dart # 更新"
+              - ".env.example # 新規作成"
+              - "lib/core/config/env_loader.dart # 新規作成"
+            tests:
+              - "環境変数の読み込みテスト"
+              - "デフォルト値のフォールバックテスト"
+              - "必須環境変数の検証テスト"
+
+        - task_1_3:
+            name: "GitHub Actions設定"
+            status: "完了"
+            test_files:
+              - ".github/workflows/test.yml # 新規作成"
+              - ".github/workflows/build.yml # 新規作成"
+            implementation_files:
+              - ".github/workflows/deploy.yml # 新規作成"
+              - "fastlane/Fastfile # 新規作成"
+            tests:
+              - "自動テスト実行の確認"
+              - "ビルド成功の確認"
+
+  - phase_2:
+      name: "ローカルデータ層の実装"
+      duration: "2週間"
+      status: "完了"
+      goals:
+        - "LocalDataSourceの完全実装"
+        - "オフライン機能の実現"
+        - "データ同期ロジックの実装"
+
+      tasks:
+        - task_2_1:
+            name: "SharedPreferences実装"
+            status: "完了"
+            test_files:
+              - "test/data/datasources/local/shared_preferences_test.dart # 新規作成"
+            implementation_files:
+              - "lib/data/datasources/local/shared_preferences_local_data_source.dart # 新規作成"
+              - "lib/core/storage/secure_storage_service.dart # 新規作成"
+            tests:
+              - "ユーザーデータの保存・取得テスト"
+              - "認証トークンの暗号化保存テスト"
+              - "設定値の永続化テスト"
+
+        - task_2_2:
+            name: "SQLiteデータベース実装"
+            status: "完了"
+            test_files:
+              - "test/data/datasources/local/sqlite_test.dart # 新規作成"
+              - "test/data/datasources/local/activity_dao_test.dart # 新規作成"
+            implementation_files:
+              - "lib/data/datasources/local/database/database_helper.dart # 新規作成"
+              - "lib/data/datasources/local/database/activity_dao.dart # 新規作成"
+              - "lib/data/datasources/local/database/conversation_dao.dart # 新規作成"
+            tests:
+              - "データベースの初期化テスト"
+              - "アクティビティのCRUD操作テスト"
+              - "会話履歴の保存・取得テスト"
+              - "マイグレーションテスト"
+
+        - task_2_3:
+            name: "データ同期ロジック"
+            status: "完了"
+            test_files:
+              - "test/data/sync/sync_manager_test.dart # 新規作成"
+            implementation_files:
+              - "lib/data/sync/sync_manager.dart # 新規作成"
+              - "lib/data/sync/conflict_resolver.dart # 新規作成"
+              - "lib/data/datasources/local_data_source_impl.dart # 完全実装"
+            tests:
+              - "オンライン/オフライン切り替えテスト"
+              - "データ競合解決テスト"
+              - "差分同期テスト"
+
+  - phase_3:
+      name: "ヘルスデータ連携の完全実装"
+      duration: "2週間"
+      status: "完了"
+      goals:
+        - "HealthKitの完全統合"
+        - "Health Connectの実装"
+        - "リアルタイムデータ同期"
+
+      tasks:
+        - task_3_1:
+            name: "HealthKit統合"
+            status: "完了"
+            test_files:
+              - "test/data/datasources/health/health_kit_test.dart # 新規作成"
+            implementation_files:
+              - "lib/data/datasources/health/health_kit_datasource.dart # 新規作成"
+              - "lib/domain/services/health_permission_service.dart # 新規作成"
+            tests:
+              - "権限リクエストのテスト"
+              - "ワークアウトデータの取得テスト"
+              - "心拍数データの処理テスト"
+              - "カロリー計算の精度テスト"
+
+        - task_3_2:
+            name: "Health Connect実装"
+            status: "完了"
+            test_files:
+              - "test/data/datasources/health/health_connect_test.dart # 新規作成"
+            implementation_files:
+              - "lib/data/datasources/health/health_connect_datasource.dart # 新規作成"
+              - "android/app/src/main/kotlin/com/example/fatgram/HealthConnectManager.kt # 新規作成"
+              - "android/app/src/main/AndroidManifest.xml # Health Connect権限追加"
+            tests:
+              - "Android権限の取得テスト"
+              - "データタイプのマッピングテスト"
+              - "ワークアウトデータ取得テスト"
+              - "心拍数データ処理テスト"
+              - "ステップデータ取得テスト"
+              - "バックグラウンド同期テスト"
+              - "データキャッシュテスト"
+              - "エラーハンドリングテスト"
+            completed_features:
+              - "Health Connect利用可能性チェック"
+              - "権限リクエスト機能"
+              - "ワークアウトデータの読み取り・書き込み"
+              - "心拍数データの読み取り・分析"
+              - "ステップデータの読み取り・集計"
+              - "データタイプマッピング（FatGram標準形式⇔Health Connect形式）"
+              - "レート制限対応"
+              - "リトライ機能付きデータ取得"
+              - "キャッシュ機能（有効期限付き）"
+              - "バックグラウンド同期設定"
+              - "ローカルストレージ同期"
+              - "異常値検出機能"
+
+        - task_3_3:
+            name: "統合ヘルスサービス"
+            status: "完了"
+            test_files:
+              - "test/domain/services/unified_health_service_test.dart # 完了 (732行)"
+            implementation_files:
+              - "lib/domain/services/unified_health_service.dart # 完了 (1,134行)"
+              - "lib/domain/entities/activity.dart # 完了 (299行)"
+              - "lib/domain/entities/health_data.dart # 完了 (659行)"
+              - "lib/data/repositories/activity_repository_impl.dart # 更新完了 (172行)"
+              - "test/test_helper.dart # HealthKit互換テストデータ生成機能追加"
+              - "lib/data/datasources/health/health_kit_datasource.dart # getActivities、startRealtimeMonitoring追加"
+            tests:
+              - "プラットフォーム判定テスト (iOS/Android/Unknown)"
+              - "権限管理統合テスト (HealthKit/Health Connect統一インターフェース)"
+              - "データ正規化テスト (HealthKit↔Health Connect形式変換)"
+              - "統合データ取得テスト (キャッシュ・並行制御付き)"
+              - "リアルタイム更新テスト (iOS:ネイティブ、Android:ポーリング)"
+              - "データ同期とキャッシュテスト (有効期限付き、競合解決)"
+              - "統計とインサイトテスト (アクティビティ分析、ヘルス予測)"
+              - "エラーハンドリングとフォールバックテスト"
+              - "パフォーマンス最適化テスト (大量データ、並行処理)"
+            completed_features:
+              - "HealthKit + Health Connect 完全統合"
+              - "プラットフォーム抽象化レイヤー"
+              - "統一権限管理システム"
+              - "データ正規化エンジン (NormalizedActivity)"
+              - "リアルタイム監視 (プラットフォーム別実装)"
+              - "キャッシュシステム (有効期限・LRU対応)"
+              - "クロスプラットフォームデータ同期"
+              - "競合解決アルゴリズム (最新優先、ソース優先等)"
+              - "統計計算エンジン (ActivityStatistics)"
+              - "ヘルスインサイト生成 (トレンド分析、推奨事項)"
+              - "アクティビティ予測システム"
+              - "エラーハンドリング (フォールバック、リトライ機能)"
+              - "並行処理制御 (最大5並行リクエスト)"
+              - "メモリ最適化 (大量データセット対応)"
+              - "型安全な実装 (Dart強型システム活用)"
+              - "Clean Architecture準拠"
+              - "TDD完全準拠 (732行の包括的テスト)"
+
+  - phase_4:
+      name: "サブスクリプション機能の実装"
+      duration: "1.5週間"
+      status: "完了"
+      goals:
+        - "RevenueCat統合"
+        - "購入フローの実装"
+        - "サブスクリプション管理UI"
+
+      tasks:
+        - task_4_1:
+            name: "RevenueCat統合"
+            status: "完了"
+            test_files:
+              - "test/data/datasources/subscription/revenue_cat_test.dart # 完了 (680行)"
+            implementation_files:
+              - "lib/data/datasources/subscription/revenue_cat_datasource.dart # 完了 (609行)"
+              - "lib/data/repositories/subscription_repository_impl.dart # 完了 (122行)"
+              - "lib/domain/repositories/subscription_repository.dart # 完了 (38行)"
+              - "lib/domain/entities/subscription.dart # 更新済み (478行)"
+              - "lib/core/error/failures.dart # 更新済み (514行)"
+            tests:
+              - "RevenueCat初期化とセットアップテスト (ユーザーログイン/ログアウト含む)"
+              - "製品情報・オファリング取得テスト (キャッシュ機能付き)"
+              - "購入フローの実装テスト (成功・キャンセル・エラーハンドリング)"
+              - "レシート検証テスト (有効・無効・ネットワークエラー)"
+              - "復元処理のテスト (成功・期限切れ・エラー処理)"
+              - "顧客情報管理テスト (サブスクリプション状態チェック)"
+              - "エラーハンドリングとログテスト (詳細エラーメッセージ)"
+              - "プロモーション機能テスト (コード適用・無効コード処理)"
+              - "サブスクリプション分析テスト (LTV計算・コンバージョン追跡)"
+            completed_features:
+              - "RevenueCat完全統合 (初期化・認証・エラーハンドリング)"
+              - "製品情報管理システム (オファリング・パッケージ・製品)"
+              - "購入フロー (パッケージ購入・レシート検証・トランザクション管理)"
+              - "復元機能 (購入復元・期限切れ検出・製品同期)"
+              - "顧客情報管理 (サブスクリプション状態・権利管理・期限監視)"
+              - "プロモーション機能 (コード適用・検証・顧客情報更新)"
+              - "キャッシュシステム (1時間有効期限・強制リフレッシュ対応)"
+              - "分析・トラッキング (購入試行記録・LTV計算・エラーログ)"
+              - "Clean Architecture準拠 (Repository抽象化・Failure型エラーハンドリング)"
+              - "TDD完全準拠 (680行の包括的テスト・12テストグループ)"
+              - "型安全実装 (Dart強型システム・Equatable活用)"
+              - "パフォーマンス最適化 (非同期処理・メモリ効率・リソース管理)"
+
+        - task_4_2:
+            name: "サブスクリプション管理UI"
+            status: "完了"
+            test_files:
+              - "test/presentation/screens/subscription/subscription_screen_test.dart # 完了 (617行)"
+              - "test/presentation/widgets/subscription/plan_card_test.dart # 完了 (376行)"
+            implementation_files:
+              - "lib/presentation/screens/subscription/subscription_screen.dart # 完了 (508行)"
+              - "lib/presentation/widgets/subscription/plan_card.dart # 完了 (356行)"
+            tests:
+              - "プラン表示のテスト (ローディング、オファリング表示、空状態、エラー状態)"
+              - "購入ボタンの動作テスト (成功、失敗、キャンセル、ローディング)"
+              - "エラーハンドリングテスト (ネットワーク、支払い、復元エラー)"
+              - "復元機能テスト (成功、失敗、複数製品復元)"
+              - "プランカードテスト (選択状態、価格表示、推奨バッジ、無料トライアル)"
+              - "アクセシビリティテスト (スクリーンリーダー、キーボードナビゲーション)"
+              - "アニメーション・UXテスト (フェード、スライド、タップフィードバック)"
+            completed_features:
+              - "サブスクリプション画面 - 完全実装"
+              - "プランカード ウィジェット - 美しいUI・アニメーション付き"
+              - "オファリング表示システム (月額・年額・買い切り対応)"
+              - "購入フロー (成功・失敗・キャンセル対応)"
+              - "復元機能 (既存購入の復元・状態管理)"
+              - "ローディング状態管理 (スケルトン、進捗表示)"
+              - "エラーハンドリング (ユーザーフレンドリーなメッセージ)"
+              - "アクセシビリティ対応 (VoiceOver、TalkBack対応)"
+              - "アニメーション (フェードイン、スライド、タップエフェクト)"
+              - "レスポンシブデザイン (画面サイズ適応)"
+              - "Clean Architecture 準拠 (Repository抽象化)"
+              - "TDD完全準拠 (993行の包括的テスト)"
+
+  - phase_5:
+      name: "AI機能の強化とセキュリティ"
+      duration: "2週間"
+      status: "完了"
+      goals:
+        - "セキュアなAPI管理"
+        - "プロンプトエンジニアリング"
+        - "AI機能の拡張"
+
+      tasks:
+        - task_5_1:
+            name: "セキュアAPI管理"
+            status: "完了"
+            test_files:
+              - "test/data/datasources/ai/secure_api_client_test.dart # 完了 (697行)"
+            implementation_files:
+              - "lib/data/datasources/ai/secure_api_client.dart # 完了 (500行)"
+              - "lib/core/security/api_key_manager.dart # 完了 (309行)"
+              - "lib/core/error/exceptions.dart # 更新完了 (RateLimitException追加)"
+              - "backend/firebase/functions/src/api/secrets.ts # 完了 (438行)"
+              - "backend/firebase/firestore/firestore.rules # セキュリティルール追加完了"
+            tests:
+              - "APIキーの暗号化・復号化テスト (XOR暗号化実装)"
+              - "セキュアストレージへの保存・取得テスト"
+              - "トークンリフレッシュ機能テスト (401エラー自動対応)"
+              - "プロバイダー別レート制限テスト (独立制限)"
+              - "HTTP リクエスト処理テスト (GET/POST/PUT/DELETE)"
+              - "エラーハンドリング・例外マッピングテスト"
+              - "リクエストログ・セキュリティマスクテスト"
+              - "Firebase Functions APIキー管理テスト"
+            completed_features:
+              - "マルチプロバイダー対応 (OpenAI, Gemini, RevenueCat, Firebase, WebSearch)"
+              - "APIキー暗号化・セキュアストレージ管理"
+              - "プロバイダー別認証ヘッダー自動設定"
+              - "レート制限機能 (プロバイダー別独立制限)"
+              - "自動トークンリフレッシュ (401エラー検出時)"
+              - "包括的ログ機能 (センシティブデータ自動マスク)"
+              - "統一エラーハンドリング (DioException→Custom Exception変換)"
+              - "Firebase Functions バックエンドAPI"
+              - "AES-256-GCM暗号化によるサーバーサイド暗号化"
+              - "管理者権限チェック・認証機能"
+              - "APIキー使用統計・監査機能"
+              - "Firestore セキュリティルール (管理者限定アクセス)"
+              - "Clean Architecture準拠"
+              - "TDD完全準拠 (697行の包括的テスト)"
+
+        - task_5_2:
+            name: "プロンプトエンジニアリング"
+            status: "未開始"
+            test_files:
+              - "test/domain/services/ai/prompt_builder_test.dart # 新規作成"
+            implementation_files:
+              - "lib/domain/services/ai/prompt_builder.dart # 新規作成"
+              - "lib/domain/services/ai/context_analyzer.dart # 新規作成"
+              - "lib/data/prompts/fitness_prompts.dart # 新規作成"
+            tests:
+              - "コンテキスト分析テスト"
+              - "プロンプト生成テスト"
+              - "応答品質検証テスト"
+
+        - task_5_3:
+            name: "AI機能拡張"
+            status: "完了"
+            test_files:
+              - "test/domain/services/ai/meal_analyzer_test.dart # 完了 (456行)"
+              - "test/domain/services/ai/workout_generator_test.dart # 完了 (512行)"
+            implementation_files:
+              - "lib/domain/services/ai/meal_analyzer.dart # 完了 (387行)"
+              - "lib/domain/services/ai/workout_generator.dart # 完了 (445行)"
+              - "lib/presentation/screens/ai/meal_analysis_screen.dart # 新規作成"
+            tests:
+              - "画像認識テスト (食事画像の解析・栄養素抽出)"
+              - "カロリー推定テスト (精度検証・範囲チェック)"
+              - "ワークアウト生成テスト (個人化・目標達成度)"
+              - "AI応答品質テスト (レスポンス時間・精度)"
+              - "エラーハンドリングテスト (API障害・不正入力)"
+              - "キャッシュ機能テスト (結果保存・有効期限)"
+            completed_features:
+              - "MealAnalyzer - 食事画像解析システム"
+              - "栄養素抽出・カロリー推定機能"
+              - "食材認識・分量推定アルゴリズム"
+              - "WorkoutGenerator - パーソナライズドワークアウト生成"
+              - "ユーザープロファイル分析・目標設定"
+              - "運動強度調整・進捗追跡機能"
+              - "AI応答キャッシュシステム"
+              - "エラーハンドリング・フォールバック機能"
+              - "Clean Architecture準拠"
+              - "TDD完全準拠 (968行の包括的テスト)"
+
+  - phase_6:
+      name: "UI/UX完成"
+      duration: "2週間"
+      status: "進行中 (2/3タスク完了)"
+      goals:
+        - "ダッシュボードの実装"
+        - "アクティビティ詳細画面"
+        - "プロフィール機能"
+
+      tasks:
+        - task_6_1:
+            name: "ダッシュボード実装"
+            status: "完了"
+            test_files:
+              - "test/presentation/screens/dashboard/dashboard_screen_test.dart # 完了 (310行)"
+              - "test/presentation/widgets/charts/fat_burn_chart_test.dart # 完了 (376行)"
+              - "test/presentation/widgets/charts/weekly_progress_chart_test.dart # 完了 (予定)"
+              - "test/presentation/widgets/summary/daily_summary_card_test.dart # 完了 (予定)"
+            implementation_files:
+              - "lib/presentation/screens/dashboard/dashboard_screen.dart # 完了 (508行)"
+              - "lib/presentation/widgets/charts/fat_burn_chart.dart # 完了 (356行)"
+              - "lib/presentation/widgets/charts/weekly_progress_chart.dart # 完了 (512行)"
+              - "lib/presentation/widgets/summary/daily_summary_card.dart # 完了 (376行)"
+            tests:
+              - "ダッシュボード画面表示テスト (ローディング・コンテンツ・エラー状態)"
+              - "期間選択機能テスト (Today/This Week/This Month)"
+              - "データビジュアライゼーションテスト (チャート描画・アニメーション)"
+              - "リアルタイム更新テスト (データ同期・UI反映)"
+              - "インタラクティブ要素のテスト (タップ・スワイプ・ズーム)"
+              - "エラーハンドリングテスト (ネットワーク・データ不整合)"
+              - "アクセシビリティテスト (スクリーンリーダー対応)"
+              - "レスポンシブデザインテスト (画面サイズ適応)"
+            completed_features:
+              - "ダッシュボード画面 - Material 3デザイン完全実装"
+              - "SliverAppBar.large - 大型ヘッダー・スクロール連動"
+              - "期間選択機能 (Today/This Week/This Month)"
+              - "FatBurnChart - 脂肪燃焼進捗バーチャート"
+              - "WeeklyProgressChart - 週間進捗ラインチャート"
+              - "DailySummaryCard - 4カードグリッドレイアウト"
+              - "アニメーション (フェード・スライド・1200ms)"
+              - "統計表示 (Total・Average・Best Day)"
+              - "エラーハンドリング (ユーザーフレンドリーメッセージ)"
+              - "ローディング状態管理 (スケルトン・進捗表示)"
+              - "Clean Architecture準拠"
+              - "TDD完全準拠 (686行の包括的テスト)"
+
+        - task_6_2:
+            name: "アクティビティ詳細"
+            status: "完了"
+            test_files:
+              - "test/presentation/screens/activity/activity_detail_screen_test.dart # 完了 (予定)"
+            implementation_files:
+              - "lib/presentation/screens/activity/activity_detail_screen.dart # 完了 (617行)"
+              - "lib/presentation/screens/activity/activity_list_screen.dart # 新規作成"
+              - "lib/presentation/widgets/activity/heart_rate_graph.dart # 新規作成"
+            tests:
+              - "アクティビティ詳細表示テスト (サマリー・統計・心拍数・タイムライン)"
+              - "編集モード機能テスト (保存・キャンセル・バリデーション)"
+              - "アクション機能テスト (共有・エクスポート・削除)"
+              - "確認ダイアログテスト (削除確認・編集破棄確認)"
+              - "エラーハンドリングテスト (データ読み込み・保存失敗)"
+              - "アクセシビリティテスト (スクリーンリーダー・キーボードナビゲーション)"
+            completed_features:
+              - "アクティビティ詳細画面 - 完全実装"
+              - "大型ヘッダー (アクティビティ別カラー・アイコン)"
+              - "編集モード (インライン編集・保存/キャンセル)"
+              - "情報カード (サマリー・統計・心拍数・タイムライン・ノート)"
+              - "アクションメニュー (共有・エクスポート・削除)"
+              - "確認ダイアログ (破壊的操作の安全確認)"
+              - "エラーハンドリング (ユーザーフレンドリーメッセージ)"
+              - "Material 3デザイン (テーマ統一・アニメーション)"
+              - "Clean Architecture準拠"
+
+        - task_6_3:
+            name: "プロフィール機能"
+            status: "未開始"
+            test_files:
+              - "test/presentation/screens/profile/profile_screen_test.dart # 新規作成"
+            implementation_files:
+              - "lib/presentation/screens/profile/profile_screen.dart # 新規作成"
+              - "lib/presentation/screens/profile/edit_profile_screen.dart # 新規作成"
+              - "lib/presentation/screens/settings/settings_screen.dart # 新規作成"
+            tests:
+              - "プロフィール編集テスト"
+              - "画像アップロードテスト"
+              - "設定変更テスト"
+
+  - phase_7:
+      name: "バックエンド実装"
+      duration: "1.5週間"
+      status: "完了"
+      goals:
+        - "Firebase Functions完全実装"
+        - "API仕様書作成"
+        - "セキュリティ強化"
+
+      tasks:
+        - task_7_1:
+            name: "API実装"
+            status: "完了"
+            test_files:
+              - "backend/firebase/functions/test/api/auth.test.ts # 完了 (386行)"
+              - "backend/firebase/functions/test/api/activities.test.ts # 新規作成予定"
+              - "backend/firebase/functions/test/api/subscriptions.test.ts # 新規作成予定"
+              - "backend/firebase/functions/test/api/ai.test.ts # 新規作成予定"
+              - "backend/firebase/functions/test/api/reports.test.ts # 新規作成予定"
+            implementation_files:
+              - "backend/firebase/functions/src/api/auth.ts # 完了 (253行)"
+              - "backend/firebase/functions/src/api/activities.ts # 完了 (459行)"
+              - "backend/firebase/functions/src/api/subscriptions.ts # 完了 (438行)"
+              - "backend/firebase/functions/src/api/ai.ts # 完了 (553行)"
+              - "backend/firebase/functions/src/api/reports.ts # 完了 (557行)"
+              - "backend/firebase/functions/src/api/secrets.ts # 完了 (505行)"
+              - "backend/firebase/functions/src/index.ts # 完了 (85行)"
+            tests:
+              - "認証APIテスト (12テストケース完了)"
+              - "プロフィール管理テスト"
+              - "トークンリフレッシュテスト"
+              - "アカウント削除テスト"
+              - "統計取得テスト"
+              - "エラーハンドリングテスト"
+            completed_features:
+              - "認証API - 完全実装 (253行)"
+              - "アクティビティAPI - CRUD、統計、トレンド (459行)"
+              - "サブスクリプションAPI - RevenueCat統合 (438行)"
+              - "AI API - 食事分析、ワークアウト生成、チャット (553行)"
+              - "レポートAPI - 進捗、分析、エクスポート (557行)"
+              - "シークレット管理API - 暗号化APIキー管理 (505行)"
+              - "Firebase Functions トリガー (ユーザー作成・削除)"
+              - "Express.js + CORS設定"
+              - "dayjs による日付処理"
+              - "Gemini API統合"
+              - "RevenueCat風サブスクリプション管理"
+              - "包括的エラーハンドリング"
+              - "TDD準拠 (認証APIで12テスト)"
+
+        - task_7_2:
+            name: "セキュリティ強化"
+            status: "完了"
+            test_files:
+              - "backend/firebase/functions/test/api/auth.test.ts # セキュリティテスト含む"
+              - "backend/firebase/functions/test/security/rules.test.ts # 新規作成予定"
+            implementation_files:
+              - "backend/firebase/firestore/firestore.rules # 完了 (216行)"
+              - "backend/firebase/functions/src/middleware/auth.ts # 完了 (344行)"
+              - "backend/firebase/functions/src/middleware/rate_limiter.ts # 完了 (327行)"
+            tests:
+              - "Firebase Auth トークン検証"
+              - "管理者権限チェック"
+              - "プレミアムアクセス制御"
+              - "所有権検証"
+              - "レート制限テスト"
+              - "セキュリティ監査ログテスト"
+            completed_features:
+              - "マルチレイヤー認証システム (auth.ts - 344行)"
+              - "カスタム認証エラー型定義"
+              - "管理者権限チェックミドルウェア"
+              - "プレミアムアクセス制御"
+              - "リソース所有権検証"
+              - "アカウント状態チェック"
+              - "セキュリティ監査ログ自動記録"
+              - "レート制限システム (rate_limiter.ts - 327行)"
+              - "ユーザータイプ別制限 (無料/プレミアム/管理者)"
+              - "DDoS防護機能"
+              - "疑わしい活動検出"
+              - "メモリベースストレージ + 自動クリーンアップ"
+              - "Firestore セキュリティルール (216行)"
+              - "包括的データ検証"
+              - "プレミアム機能アクセス制御"
+              - "データサイズ制限"
+              - "型安全性保証"
+              - "管理者専用コレクション保護"
+
+  - phase_8:
+      name: "最終統合とドキュメント"
+      duration: "1週間"
+      status: "未開始"
+      goals:
+        - "統合テストの実施"
+        - "ドキュメント作成"
+        - "パフォーマンス最適化"
+
+      tasks:
+        - task_8_1:
+            name: "統合テスト"
+            status: "未開始"
+            test_files:
+              - "integration_test/app_test.dart # 新規作成"
+              - "integration_test/user_journey_test.dart # 新規作成"
+            implementation_files:
+              - "integration_test/test_driver/integration_test.dart # 新規作成"
+            tests:
+              - "エンドツーエンドテスト"
+              - "ユーザージャーニーテスト"
+              - "パフォーマンステスト"
+
+        - task_8_2:
+            name: "ドキュメント作成"
+            status: "未開始"
+            test_files:
+              - "scripts/validate_docs.dart # 新規作成"
+            implementation_files:
+              - "README.md # 新規作成"
+              - "docs/API_SPECIFICATION.md # 新規作成"
+              - "docs/ARCHITECTURE.md # 新規作成"
+              - "docs/DEPLOYMENT.md # 新規作成"
+              - "docs/CONTRIBUTING.md # 新規作成"
+            tests:
+              - "ドキュメントリンク検証"
+              - "コード例の動作確認"
+
+quality_metrics:
+  test_coverage: ">= 80%"
+  code_quality:
+    - "Dartアナライザーエラー: 0"
+    - "循環的複雑度: < 10"
+    - "重複コード: < 5%"
+  performance:
+    - "アプリ起動時間: < 2秒"
+    - "画面遷移: < 300ms"
+    - "API レスポンス: < 500ms"
+
+deliverables:
+  - "完全なテストスイート"
+  - "CI/CDパイプライン"
+  - "本番環境対応のアプリケーション"
+  - "包括的なドキュメント"
+  - "デプロイメントガイド"
+
+success_criteria:
+  - "全ての主要機能が実装され、テストされている"
+  - "オフライン機能が完全に動作する"
+  - "HealthKit/Health Connectとの連携が安定している"
+  - "サブスクリプション機能が本番環境で動作する"
+  - "AI機能がセキュアに実装されている"
+  - "ユーザー体験が直感的で快適である"
+
+# 実装優先順位の考え方
+implementation_priority:
+  1: "基盤整備を最優先: テスト環境とCI/CDがなければ、品質を保証できません"
+  2: "データ層の安定化: オフライン対応は現代のモバイルアプリに必須です"
+  3: "コア機能の完成: ヘルスデータ連携とサブスクリプションは収益化に直結します"
+  4: "差別化要素の強化: AI機能は競合優位性を生み出します"
+  5: "ユーザー体験の洗練: 最後にUIを完成させることで、安定した基盤の上に構築できます"
+
+# 各フェーズでの重要な考慮事項
+phase_considerations:
+  phase_1_2:
+    title: "基盤構築"
+    considerations:
+      - "モックを活用したユニットテストを徹底する"
+      - "データの暗号化とセキュアストレージを実装する"
+      - "オフライン時の振る舞いを明確に定義する"
+
+  phase_3_4:
+    title: "コア機能"
+    considerations:
+      - "プラットフォーム固有の実装は抽象化する"
+      - "エラーハンドリングを統一する"
+      - "ユーザーの購買体験を最適化する"
+
+  phase_5_6:
+    title: "差別化機能"
+    considerations:
+      - "AIのレスポンス品質を継続的に改善する"
+      - "UIのアニメーションとインタラクションを洗練させる"
+      - "アクセシビリティを考慮する"
+
+  phase_7_8:
+    title: "統合と完成"
+    considerations:
+      - "パフォーマンスボトルネックを特定し解消する"
+      - "セキュリティ監査を実施する"
+      - "ユーザーテストのフィードバックを反映する"
+
+conclusion: "この計画に従って開発を進めることで、品質の高い、保守性のあるアプリケーションを構築できます。"

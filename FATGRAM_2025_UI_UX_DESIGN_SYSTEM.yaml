@@ -1,0 +1,745 @@
+# FatGram 2025 UI/UX Design System
+# 脂肪燃焼特化フィットネスアプリのためのデザインシステム設計書
+
+project_name: "FatGram"
+design_system_version: "2.0"
+created_date: "2025-06-22"
+target_year: "2025"
+design_philosophy: "AI-Powered Fat Burning Visualization with Liquid Glass Aesthetics"
+
+# =============================================================================
+# 📊 2025年設計原則 (Design Principles)
+# =============================================================================
+design_principles:
+  core_concept: "脂肪燃焼の可視化とAI駆動パーソナライゼーション"
+  
+  primary_principles:
+    fat_centric_visualization:
+      description: "脂肪燃焼量を中心とした独自のデータ可視化"
+      implementation:
+        - "7.2kcal/g換算による脂肪グラム表示"
+        - "リアルタイム脂肪燃焼メーター"
+        - "燃焼脂肪の3Dビジュアライゼーション"
+        - "時間軸での脂肪減少アニメーション"
+    
+    ai_driven_personalization:
+      description: "AIによる完全個別化インターフェース"
+      implementation:
+        - "ユーザー行動に基づく動的UI調整"
+        - "AI推奨事項の直感的表示"
+        - "パーソナライズされたダッシュボード配置"
+        - "予測分析に基づくモチベーション機能"
+    
+    liquid_glass_aesthetics:
+      description: "Apple watchOS 26 Liquid Glass風の次世代UI"
+      implementation:
+        - "半透明背景とグラス効果"
+        - "動的光反射エフェクト"
+        - "流体的トランジション"
+        - "物理性を感じるインタラクション"
+    
+    microinteraction_excellence:
+      description: "細部のマイクロインタラクションによる体験向上"
+      implementation:
+        - "脂肪燃焼時のハプティックフィードバック"
+        - "達成時の3Dセレブレーション"
+        - "プログレス時の流体アニメーション"
+        - "音響フィードバックの統合"
+
+# =============================================================================
+# 🎨 カラーシステム (Color System)
+# =============================================================================
+color_system:
+  brand_identity:
+    primary_fat_burn:
+      name: "Fat Burn Orange"
+      hex: "#FF6B35"
+      rgb: [255, 107, 53]
+      usage: "脂肪燃焼メイン要素、アクションボタン"
+      psychology: "エネルギー、燃焼、活動促進"
+    
+    secondary_energy:
+      name: "Energy Gradient"
+      start: "#FF6B35"
+      end: "#FF8E53"
+      usage: "グラデーション、エネルギー表現"
+    
+    accent_achievement:
+      name: "Achievement Gold"
+      hex: "#FFD700"
+      rgb: [255, 215, 0]
+      usage: "達成バッジ、ゴール達成表示"
+  
+  functional_colors:
+    success_green:
+      name: "Health Success"
+      hex: "#4CAF50"
+      usage: "健康状態良好、目標達成"
+    
+    warning_amber:
+      name: "Caution Amber"
+      hex: "#FFC107"
+      usage: "注意喚起、中間状態"
+    
+    error_red:
+      name: "Alert Red"
+      hex: "#F44336"
+      usage: "エラー、危険状態"
+    
+    info_blue:
+      name: "Information Blue"
+      hex: "#2196F3"
+      usage: "情報提供、中性的データ"
+  
+  adaptive_modes:
+    light_mode:
+      background:
+        primary: "#FFFFFF"
+        secondary: "#F8F9FA"
+        tertiary: "#F1F3F4"
+      surface:
+        elevated: "rgba(255, 255, 255, 0.95)"
+        glass: "rgba(255, 255, 255, 0.8)"
+      text:
+        primary: "#1A1A1A"
+        secondary: "#666666"
+        tertiary: "#999999"
+    
+    dark_mode:
+      background:
+        primary: "#121212"
+        secondary: "#1E1E1E"
+        tertiary: "#2D2D2D"
+      surface:
+        elevated: "rgba(30, 30, 30, 0.95)"
+        glass: "rgba(50, 50, 50, 0.8)"
+      text:
+        primary: "#FFFFFF"
+        secondary: "#CCCCCC"
+        tertiary: "#999999"
+
+# =============================================================================
+# 🔤 タイポグラフィー (Typography)
+# =============================================================================
+typography:
+  font_families:
+    primary:
+      name: "SF Pro Display"
+      weights: [300, 400, 500, 600, 700, 800]
+      usage: "iOS準拠、メインテキスト"
+    
+    secondary:
+      name: "Roboto"
+      weights: [300, 400, 500, 700]
+      usage: "Android準拠、メインテキスト"
+    
+    data_display:
+      name: "SF Mono / Roboto Mono"
+      weights: [400, 500, 600]
+      usage: "数値データ、統計表示"
+  
+  text_scales:
+    mobile:
+      display_large:
+        size: 57
+        line_height: 64
+        weight: 400
+        usage: "メインダッシュボード見出し"
+      
+      display_medium:
+        size: 45
+        line_height: 52
+        weight: 400
+        usage: "脂肪燃焼量メイン表示"
+      
+      headline_large:
+        size: 32
+        line_height: 40
+        weight: 600
+        usage: "セクション見出し"
+      
+      headline_medium:
+        size: 28
+        line_height: 36
+        weight: 500
+        usage: "カード見出し"
+      
+      body_large:
+        size: 16
+        line_height: 24
+        weight: 400
+        usage: "本文テキスト"
+      
+      body_medium:
+        size: 14
+        line_height: 20
+        weight: 400
+        usage: "説明文、キャプション"
+      
+      label_large:
+        size: 14
+        line_height: 20
+        weight: 500
+        usage: "ボタンラベル"
+    
+    watch:
+      display:
+        size: 20
+        line_height: 24
+        weight: 600
+        usage: "Apple Watch メイン表示"
+      
+      body:
+        size: 16
+        line_height: 19
+        weight: 400
+        usage: "Apple Watch 本文"
+      
+      caption:
+        size: 14
+        line_height: 16
+        weight: 400
+        usage: "Apple Watch 補助情報"
+
+# =============================================================================
+# 📱 コンポーネントライブラリ (Component Library)
+# =============================================================================
+components:
+  
+  # ダッシュボードコンポーネント
+  dashboard_components:
+    fat_burn_meter:
+      description: "リアルタイム脂肪燃焼量表示メーター"
+      design_specs:
+        type: "circular_progress"
+        size: "120dp x 120dp"
+        colors:
+          - start: "#FF6B35"
+          - end: "#FF8E53"
+        animations:
+          - "液体的充填アニメーション"
+          - "燃焼時のパルス効果"
+        data_display:
+          - "現在燃焼量 (g)"
+          - "目標達成率 (%)"
+          - "燃焼速度 (g/h)"
+    
+    daily_summary_card:
+      description: "日次サマリー表示カード"
+      design_specs:
+        layout: "glass_card"
+        background: "rgba(255, 255, 255, 0.8)"
+        backdrop_filter: "blur(20px)"
+        border_radius: "20dp"
+        padding: "20dp"
+        metrics:
+          - "総脂肪燃焼量"
+          - "活動時間"
+          - "カロリー消費"
+          - "達成率"
+        visualization: "mini_charts"
+    
+    weekly_progress_chart:
+      description: "週間進捗チャート"
+      design_specs:
+        type: "line_chart_3d"
+        height: "200dp"
+        data_points: ["脂肪燃焼", "活動強度", "継続日数"]
+        style: "gradient_fill"
+        interactions:
+          - "ピンチズーム"
+          - "データポイントタップ"
+          - "時間軸スクロール"
+    
+    ai_insights_panel:
+      description: "AI洞察・推奨事項パネル"
+      design_specs:
+        layout: "expandable_card"
+        header: "AI recommendations"
+        content_types:
+          - "パーソナライズ提案"
+          - "目標調整アドバイス"
+          - "最適タイミング通知"
+        visual_style: "conversational_ui"
+  
+  # ワークアウトコンポーネント
+  workout_components:
+    live_session_interface:
+      description: "ライブワークアウトセッション画面"
+      design_specs:
+        layout: "immersive_fullscreen"
+        elements:
+          timer:
+            position: "top_center"
+            style: "large_digital"
+            color: "#FF6B35"
+          
+          fat_burn_realtime:
+            position: "center"
+            style: "pulsing_circle"
+            size: "200dp"
+            animation: "liquid_fill"
+          
+          controls:
+            position: "bottom"
+            style: "floating_buttons"
+            actions: ["pause", "skip", "settings"]
+        
+        overlays:
+          - "心拍数ゾーン表示"
+          - "燃焼効率リアルタイム"
+          - "AIコーチング音声"
+    
+    exercise_card:
+      description: "エクササイズ選択カード"
+      design_specs:
+        size: "300dp x 180dp"
+        style: "3d_elevated"
+        content:
+          - "エクササイズ画像/動画"
+          - "推定脂肪燃焼量"
+          - "難易度表示"
+          - "所要時間"
+        hover_effects:
+          - "3D傾斜"
+          - "輝度変化"
+          - "シャドウ強化"
+  
+  # AI機能コンポーネント
+  ai_components:
+    chat_interface:
+      description: "AIアシスタントチャット"
+      design_specs:
+        style: "conversational_bubbles"
+        ai_avatar: "animated_3d_character"
+        message_types:
+          - "テキスト"
+          - "データ可視化"
+          - "推奨アクション"
+        input_methods:
+          - "テキスト入力"
+          - "音声入力"
+          - "画像アップロード"
+    
+    personalization_panel:
+      description: "パーソナライゼーション設定"
+      design_specs:
+        layout: "adaptive_grid"
+        sections:
+          - "目標設定"
+          - "好みの運動"
+          - "時間帯設定"
+          - "通知設定"
+        visual_feedback: "実時間プレビュー"
+
+# =============================================================================
+# 📐 レイアウトシステム (Layout System)
+# =============================================================================
+layout_system:
+  grid_system:
+    mobile:
+      columns: 4
+      gutter: "16dp"
+      margins: "20dp"
+      breakpoints:
+        small: "360dp"
+        medium: "768dp"
+        large: "1024dp"
+    
+    tablet:
+      columns: 8
+      gutter: "24dp"
+      margins: "32dp"
+    
+    watch:
+      layout: "circular_adaptive"
+      safe_area: "44mm circle"
+      edge_margins: "4dp"
+  
+  spacing_scale:
+    base_unit: "4dp"
+    scale:
+      xs: "4dp"
+      sm: "8dp"
+      md: "16dp"
+      lg: "24dp"
+      xl: "32dp"
+      xxl: "48dp"
+      xxxl: "64dp"
+  
+  screen_templates:
+    dashboard:
+      header: "80dp"
+      content: "flexible"
+      bottom_nav: "80dp"
+      floating_action: "56dp + 16dp margin"
+    
+    workout_session:
+      header: "optional_overlay"
+      content: "fullscreen"
+      controls: "floating_bottom"
+    
+    profile:
+      header: "160dp (large_avatar)"
+      content: "scrollable_sections"
+      bottom_nav: "80dp"
+
+# =============================================================================
+# 🎬 アニメーション・インタラクション (Animation & Interaction)
+# =============================================================================
+animations:
+  motion_principles:
+    duration_scale:
+      micro: "100ms"
+      short: "200ms"
+      medium: "400ms"
+      long: "600ms"
+      extended: "1000ms"
+    
+    easing_curves:
+      standard: "cubic-bezier(0.4, 0.0, 0.2, 1)"
+      decelerate: "cubic-bezier(0.0, 0.0, 0.2, 1)"
+      accelerate: "cubic-bezier(0.4, 0.0, 1, 1)"
+      emphasized: "cubic-bezier(0.2, 0.0, 0, 1)"
+  
+  signature_animations:
+    fat_burn_visualization:
+      description: "脂肪燃焼の液体的可視化"
+      duration: "2000ms"
+      easing: "emphasized"
+      keyframes:
+        - "0%: 透明な容器"
+        - "50%: オレンジ液体が充填"
+        - "100%: 輝くエネルギー放射"
+    
+    achievement_celebration:
+      description: "目標達成時のセレブレーション"
+      duration: "3000ms"
+      elements:
+        - "パーティクル爆発"
+        - "3Dバッジ回転"
+        - "ハプティック連動"
+        - "サウンドエフェクト"
+    
+    data_morphing:
+      description: "データの動的変形表示"
+      duration: "800ms"
+      easing: "standard"
+      types:
+        - "数値カウントアップ"
+        - "グラフ形状変化"
+        - "色相変化"
+    
+    liquid_transitions:
+      description: "画面間の流体的遷移"
+      duration: "600ms"
+      easing: "emphasized"
+      effect: "morphing_blob_transition"
+  
+  microinteractions:
+    button_press:
+      duration: "150ms"
+      scale: "0.95"
+      haptic: "light"
+    
+    card_hover:
+      duration: "200ms"
+      elevation: "+4dp"
+      scale: "1.02"
+    
+    progress_update:
+      duration: "500ms"
+      effect: "elastic_spring"
+      color_shift: "true"
+
+# =============================================================================
+# 📱 プラットフォーム別デザイン (Platform-Specific Design)
+# =============================================================================
+platform_adaptations:
+  ios:
+    design_language: "iOS 17 + Liquid Glass Elements"
+    navigation:
+      type: "tab_bar"
+      style: "translucent_blur"
+      items: 5
+      safe_area: "dynamic_island_aware"
+    
+    components:
+      - "SF Symbols 5.0"
+      - "Dynamic Type サポート"
+      - "ハプティックエンジン活用"
+      - "Live Activities 対応"
+    
+    gestures:
+      - "スワイプナビゲーション"
+      - "長押しコンテキスト"
+      - "ピンチズーム"
+      - "3D Touch 代替"
+  
+  android:
+    design_language: "Material Design 3 + Custom Extensions"
+    navigation:
+      type: "bottom_navigation"
+      style: "material_3_rails"
+      items: 5
+      gesture_nav: "system_compatible"
+    
+    components:
+      - "Material Icons Extended"
+      - "Dynamic Color System"
+      - "Edge-to-Edge レイアウト"
+      - "Notification Extensions"
+    
+    gestures:
+      - "スワイプジェスチャー"
+      - "長押しメニュー"
+      - "マルチタッチ"
+      - "システムジェスチャー統合"
+  
+  apple_watch:
+    design_language: "watchOS 26 Liquid Glass"
+    interface_style:
+      - "Liquid Glass 背景"
+      - "Rounded Corner 最適化"
+      - "Translucent Elements"
+      - "Dynamic Reactions"
+    
+    complications:
+      fat_burn_meter:
+        type: "circular"
+        data: "リアルタイム燃焼量"
+        update_frequency: "30秒"
+      
+      daily_progress:
+        type: "rectangular"
+        data: "日次達成率"
+        colors: "Fat Burn Orange"
+    
+    workout_interface:
+      - "Full Screen Metrics"
+      - "Digital Crown ナビゲーション"
+      - "Workout Buddy AI 統合"
+      - "ハプティック強化"
+
+# =============================================================================
+# 🔧 実装ガイドライン (Implementation Guidelines)
+# =============================================================================
+implementation:
+  flutter_specifications:
+    theme_system:
+      - "Material 3 ThemeData 拡張"
+      - "カスタムカラーシーム"
+      - "動的テーマ切り替え"
+      - "ダークモード自動対応"
+    
+    animation_packages:
+      - "rive: ^0.12.0 (複雑アニメーション)"
+      - "lottie: ^2.7.0 (マイクロアニメーション)"
+      - "flutter_animate: ^4.5.0 (チェーンアニメーション)"
+      - "shimmer: ^3.0.0 (ローディング)"
+    
+    custom_widgets:
+      - "FatBurnMeter (カスタムペイント)"
+      - "LiquidProgressIndicator"
+      - "GlassCard (バックドロップフィルター)"
+      - "AnimatedFatVisualization"
+  
+  performance_optimization:
+    - "const constructors 使用"
+    - "ListView.builder 遅延読み込み"
+    - "画像キャッシング (cached_network_image)"
+    - "isolate 使用 (重い計算)"
+    - "ウィジェット再構築最小化"
+  
+  accessibility:
+    - "WCAG 2.1 AA準拠"
+    - "VoiceOver / TalkBack 対応"
+    - "カラーコントラスト4.5:1以上"
+    - "フォーカス管理"
+    - "意味のあるセマンティクス"
+
+# =============================================================================
+# 🎯 デザイン戦略・差別化要素 (Design Strategy)
+# =============================================================================
+design_strategy:
+  competitive_advantages:
+    unique_fat_visualization:
+      description: "業界初の脂肪燃焼特化ビジュアライゼーション"
+      implementation:
+        - "3Dリアルタイム脂肪燃焼表示"
+        - "液体的燃焼エフェクト"
+        - "科学的根拠に基づく7.2kcal/g計算"
+        - "時系列での脂肪減少アニメーション"
+    
+    ai_driven_personalization:
+      description: "完全個別化されたインターフェース体験"
+      implementation:
+        - "ユーザー行動学習によるUI最適化"
+        - "予測的推奨事項表示"
+        - "動的レイアウト調整"
+        - "個人化されたモチベーション機能"
+    
+    next_gen_aesthetics:
+      description: "2025年最先端のリキッドグラスデザイン"
+      implementation:
+        - "Apple watchOS 26準拠デザイン"
+        - "物理性を感じる流体インタラクション"
+        - "半透明エレメントとブラー効果"
+        - "動的光反射エフェクト"
+  
+  user_engagement_strategy:
+    gamification:
+      - "脂肪燃焼量ベースのレベルシステム"
+      - "週間燃焼チャレンジ"
+      - "友人間での燃焼量比較"
+      - "達成バッジコレクション"
+    
+    social_features:
+      - "燃焼量シェア機能"
+      - "グループチャレンジ"
+      - "AI生成モチベーションメッセージ"
+      - "プログレス写真タイムライン"
+    
+    retention_mechanisms:
+      - "毎日の燃焼目標設定"
+      - "ストリーク維持システム"
+      - "パーソナライズプッシュ通知"
+      - "ウィークリープログレスレポート"
+
+# =============================================================================
+# 📊 成功指標・測定基準 (Success Metrics)
+# =============================================================================
+success_metrics:
+  user_engagement:
+    daily_active_users: "目標80%+ (業界平均60%)"
+    session_duration: "目標15分+ (脂肪燃焼可視化による延長)"
+    feature_adoption:
+      fat_burn_meter: "95%+"
+      ai_recommendations: "80%+"
+      social_sharing: "60%+"
+  
+  design_performance:
+    app_store_rating: "目標4.8/5.0+"
+    ui_usability_score: "目標90%+"
+    loading_time: "< 2秒 (初回起動)"
+    crash_rate: "< 0.1%"
+  
+  business_impact:
+    user_retention:
+      day_1: "85%+"
+      day_7: "60%+"
+      day_30: "40%+"
+    conversion_rate: "30%+ (無料→プレミアム)"
+    customer_satisfaction: "NPS 70+"
+
+# =============================================================================
+# 🚀 実装ロードマップ (Implementation Roadmap)
+# =============================================================================
+implementation_roadmap:
+  phase_1_foundation:
+    duration: "2週間"
+    deliverables:
+      - "デザインシステム実装"
+      - "基本コンポーネント開発"
+      - "カラー・タイポグラフィ適用"
+      - "基本アニメーション実装"
+  
+  phase_2_core_features:
+    duration: "3週間"
+    deliverables:
+      - "脂肪燃焼メーター実装"
+      - "ダッシュボード完成"
+      - "ワークアウト画面実装"
+      - "AI インターフェース実装"
+  
+  phase_3_advanced_features:
+    duration: "2週間"
+    deliverables:
+      - "リキッドグラス効果実装"
+      - "高度なアニメーション実装"
+      - "Apple Watch 対応"
+      - "アクセシビリティ最適化"
+  
+  phase_4_polish:
+    duration: "1週間"
+    deliverables:
+      - "マイクロインタラクション調整"
+      - "パフォーマンス最適化"
+      - "ユーザーテスト対応"
+      - "最終品質確認"
+
+# =============================================================================
+# 📋 品質保証・テスト (Quality Assurance)
+# =============================================================================
+quality_assurance:
+  design_testing:
+    usability_testing:
+      - "ユーザビリティセッション (週次)"
+      - "A/Bテスト (脂肪燃焼表示方法)"
+      - "アクセシビリティ監査"
+      - "パフォーマンステスト"
+    
+    device_testing:
+      mobile:
+        - "iPhone 15 Pro Max"
+        - "iPhone 14"
+        - "Samsung Galaxy S24"
+        - "Google Pixel 8"
+      tablet:
+        - "iPad Pro 12.9"
+        - "iPad Air"
+        - "Samsung Galaxy Tab S9"
+      watch:
+        - "Apple Watch Series 9"
+        - "Apple Watch Ultra 2"
+        - "Samsung Galaxy Watch 6"
+  
+  performance_benchmarks:
+    - "60fps 維持率: 99%+"
+    - "メモリ使用量: < 100MB"
+    - "初回読み込み時間: < 2秒"
+    - "アニメーション滑らかさ: 毎フレーム16ms以下"
+
+# =============================================================================
+# 📚 デザインドキュメント・リソース (Design Documentation)
+# =============================================================================
+documentation:
+  design_files:
+    figma_workspace: "FatGram 2025 Design System"
+    sketch_libraries: "FatGram Component Library"
+    adobe_xd: "FatGram Prototypes"
+  
+  developer_resources:
+    flutter_theme: "lib/core/theme/fatgram_theme.dart"
+    component_library: "lib/presentation/widgets/"
+    animation_library: "lib/core/animations/"
+    asset_library: "assets/images/, assets/animations/"
+  
+  style_guide:
+    - "FatGram_Style_Guide_2025.pdf"
+    - "Component_Usage_Guidelines.md"
+    - "Animation_Specifications.md"
+    - "Accessibility_Checklist.md"
+
+# =============================================================================
+# 🎉 まとめ (Summary)
+# =============================================================================
+summary:
+  design_vision: |
+    FatGram 2025 UI/UXデザインシステムは、脂肪燃焼の可視化を中心とした
+    革新的なフィットネスアプリ体験を提供します。Apple watchOS 26の
+    Liquid Glassデザイン言語を取り入れた次世代インターフェースと、
+    AI駆動のパーソナライゼーションにより、ユーザーの健康目標達成を
+    直感的かつ魅力的にサポートします。
+  
+  competitive_edge: |
+    - 業界初の脂肪燃焼特化ビジュアライゼーション
+    - 2025年最先端のLiquid Glassデザイン
+    - AI完全個別化インターフェース
+    - 科学的根拠に基づく7.2kcal/g脂肪燃焼計算
+    - Apple Watch Series 9/Ultra 2完全対応
+  
+  success_promise: |
+    このデザインシステムにより、FatGramは2025年のフィットネスアプリ市場で
+    差別化された地位を確立し、ユーザーエンゲージメント80%+、
+    アプリストア評価4.8/5.0+、プレミアム転換率30%+を達成します。

@@ -1,0 +1,43 @@
+{
+  "id": "activity-123",
+  "userId": "test-user-123",
+  "type": "running",
+  "name": "Morning Run",
+  "duration": 1800,
+  "distance": 5.2,
+  "calories": 350,
+  "averageHeartRate": 145,
+  "maxHeartRate": 165,
+  "pace": "5:46",
+  "elevation": 45.5,
+  "startTime": "2024-01-15T07:00:00.000Z",
+  "endTime": "2024-01-15T07:30:00.000Z",
+  "route": {
+    "coordinates": [
+      {"lat": 35.6762, "lng": 139.6503, "timestamp": "2024-01-15T07:00:00.000Z"},
+      {"lat": 35.6765, "lng": 139.6510, "timestamp": "2024-01-15T07:05:00.000Z"},
+      {"lat": 35.6770, "lng": 139.6520, "timestamp": "2024-01-15T07:10:00.000Z"}
+    ]
+  },
+  "heartRateData": [
+    {"timestamp": "2024-01-15T07:00:00.000Z", "bpm": 120},
+    {"timestamp": "2024-01-15T07:05:00.000Z", "bpm": 145},
+    {"timestamp": "2024-01-15T07:10:00.000Z", "bpm": 155},
+    {"timestamp": "2024-01-15T07:15:00.000Z", "bpm": 150},
+    {"timestamp": "2024-01-15T07:20:00.000Z", "bpm": 148},
+    {"timestamp": "2024-01-15T07:25:00.000Z", "bpm": 140},
+    {"timestamp": "2024-01-15T07:30:00.000Z", "bpm": 125}
+  ],
+  "fatBurnData": {
+    "fatBurnZoneTime": 1200,
+    "fatBurnPercentage": 66.7,
+    "estimatedFatCalories": 210
+  },
+  "weather": {
+    "temperature": 15.5,
+    "humidity": 65,
+    "condition": "partly_cloudy"
+  },
+  "createdAt": "2024-01-15T07:30:00.000Z",
+  "syncedAt": "2024-01-15T07:31:00.000Z"
+}

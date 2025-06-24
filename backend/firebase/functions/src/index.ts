@@ -8,6 +8,7 @@ import './api/activities';
 import './api/subscriptions';
 import './api/ai';
 import './api/reports';
+import './api/secrets';
 
 // 環境変数
 const region = defineString('REGION', {default: 'asia-northeast1'});

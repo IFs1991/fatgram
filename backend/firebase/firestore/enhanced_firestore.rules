@@ -1,0 +1,274 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =============================================
+    // Enhanced Security Rules for FatGram
+    // =============================================
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    function isValidEmail(email) {
+      return email is string && 
+             email.matches('.*@.*\\..*') &&
+             email.size() <= 254;
+    }
+    
+    function isValidTimestamp(timestamp) {
+      return timestamp is timestamp &&
+             timestamp <= request.time &&
+             timestamp >= timestamp.date(1970, 1, 1);
+    }
+    
+    function isWithinRateLimit(path, limit, timeWindow) {
+      // Rate limiting implementation
+      // In production, use external rate limiting service
+      return true; // Simplified for this implementation
+    }
+    
+    function hasValidDeviceFingerprint() {
+      return request.auth.token.device_fingerprint is string &&
+             request.auth.token.device_fingerprint.size() > 0;
+    }
+    
+    function isValidUserAgent() {
+      return request.headers.get('user-agent', '').matches('.*FatGram.*');
+    }
+    
+    // =============================================
+    // User Data Rules
+    // =============================================
+    match /users/{userId} {
+      allow read: if isAuthenticated() && 
+                     isOwner(userId) &&
+                     hasValidDeviceFingerprint();
+      
+      allow create: if isAuthenticated() && 
+                       isOwner(userId) &&
+                       validateUserData(request.resource.data) &&
+                       isWithinRateLimit('user_create', 1, duration.value(1, 'h'));
+      
+      allow update: if isAuthenticated() && 
+                       isOwner(userId) &&
+                       validateUserData(request.resource.data) &&
+                       isWithinRateLimit('user_update', 10, duration.value(1, 'h'));
+      
+      allow delete: if isAuthenticated() && 
+                       isOwner(userId) &&
+                       // Additional verification for account deletion
+                       request.auth.token.email_verified == true;
+      
+      function validateUserData(user) {
+        let requiredFields = ['id', 'email', 'createdAt'];
+        let allowedFields = ['id', 'email', 'displayName', 'photoUrl', 'height', 'weight', 'age', 'isPremium', 'createdAt', 'lastLoginAt', 'updatedAt'];
+        
+        return user.keys().hasAll(requiredFields) &&
+               user.keys().hasOnly(allowedFields) &&
+               user.id == userId &&
+               isValidEmail(user.email) &&
+               isValidTimestamp(user.createdAt) &&
+               (user.displayName == null || (user.displayName is string && user.displayName.size() <= 100)) &&
+               (user.photoUrl == null || (user.photoUrl is string && user.photoUrl.matches('https://.*'))) &&
+               (user.height == null || (user.height is number && user.height > 0 && user.height <= 300)) &&
+               (user.weight == null || (user.weight is number && user.weight > 0 && user.weight <= 1000)) &&
+               (user.age == null || (user.age is number && user.age > 0 && user.age <= 150)) &&
+               (user.isPremium is bool) &&
+               (user.lastLoginAt == null || isValidTimestamp(user.lastLoginAt));
+      }
+    }
+    
+    // =============================================
+    // Activity Data Rules
+    // =============================================
+    match /activities/{activityId} {
+      allow read: if isAuthenticated() && 
+                     isOwner(resource.data.userId) &&
+                     hasValidDeviceFingerprint();
+      
+      allow create: if isAuthenticated() && 
+                       isOwner(request.resource.data.userId) &&
+                       validateActivityData(request.resource.data) &&
+                       isWithinRateLimit('activity_create', 100, duration.value(1, 'h'));
+      
+      allow update: if isAuthenticated() && 
+                       isOwner(resource.data.userId) &&
+                       isOwner(request.resource.data.userId) &&
+                       validateActivityData(request.resource.data) &&
+                       // Prevent modification of old activities (older than 24 hours)
+                       resource.data.timestamp > timestamp.date(request.time.year, request.time.month, request.time.day - 1);
+      
+      allow delete: if isAuthenticated() && 
+                       isOwner(resource.data.userId) &&
+                       // Only allow deletion within 1 hour of creation
+                       resource.data.createdAt > timestamp.date(request.time.year, request.time.month, request.time.day, request.time.hour - 1);
+      
+      function validateActivityData(activity) {
+        let requiredFields = ['id', 'userId', 'type', 'timestamp', 'durationInSeconds', 'caloriesBurned'];
+        let allowedFields = ['id', 'userId', 'type', 'timestamp', 'durationInSeconds', 'caloriesBurned', 'distanceInMeters', 'fatGramsBurned', 'metadata', 'syncStatus', 'createdAt', 'updatedAt'];
+        let validTypes = ['walking', 'running', 'cycling', 'swimming', 'workout', 'weightTraining', 'yoga', 'tennis', 'basketball', 'soccer', 'volleyball', 'golf', 'hiking', 'climbing', 'skiing', 'rowing', 'dancing', 'other'];
+        
+        return activity.keys().hasAll(requiredFields) &&
+               activity.keys().hasOnly(allowedFields) &&
+               activity.id is string &&
+               activity.id.size() > 0 &&
+               activity.userId is string &&
+               activity.type in validTypes &&
+               isValidTimestamp(activity.timestamp) &&
+               activity.durationInSeconds is number &&
+               activity.durationInSeconds >= 0 &&
+               activity.durationInSeconds <= 86400 && // Max 24 hours
+               activity.caloriesBurned is number &&
+               activity.caloriesBurned >= 0 &&
+               activity.caloriesBurned <= 10000 && // Reasonable max
+               (activity.distanceInMeters == null || (activity.distanceInMeters is number && activity.distanceInMeters >= 0 && activity.distanceInMeters <= 1000000)) && // Max 1000km
+               (activity.fatGramsBurned == null || (activity.fatGramsBurned is number && activity.fatGramsBurned >= 0)) &&
+               (activity.metadata == null || activity.metadata is map) &&
+               (activity.syncStatus == null || activity.syncStatus in ['pending', 'synced', 'failed']);
+      }
+    }
+    
+    // =============================================
+    // Security Audit Log Rules
+    // =============================================
+    match /security_logs/{logId} {
+      allow read: if isAuthenticated() && 
+                     isOwner(resource.data.userId) &&
+                     // Only users can read their own security logs
+                     resource.data.userId == request.auth.uid;
+      
+      allow create: if isAuthenticated() && 
+                       validateSecurityLog(request.resource.data) &&
+                       isWithinRateLimit('security_log', 1000, duration.value(1, 'h'));
+      
+      // Security logs are immutable
+      allow update: if false;
+      allow delete: if false;
+      
+      function validateSecurityLog(log) {
+        let requiredFields = ['userId', 'eventType', 'timestamp', 'message'];
+        let allowedFields = ['userId', 'eventType', 'timestamp', 'message', 'deviceFingerprint', 'ipAddress', 'userAgent'];
+        let validEventTypes = ['LOGIN', 'LOGOUT', 'API_KEY_ACCESS', 'DATA_ACCESS', 'SECURITY_VIOLATION', 'BIOMETRIC_AUTH'];
+        
+        return log.keys().hasAll(requiredFields) &&
+               log.keys().hasOnly(allowedFields) &&
+               log.userId is string &&
+               log.eventType in validEventTypes &&
+               isValidTimestamp(log.timestamp) &&
+               log.message is string &&
+               log.message.size() <= 1000;
+      }
+    }
+    
+    // =============================================
+    // Admin-only Collections
+    // =============================================
+    match /admin_configs/{configId} {
+      allow read, write: if false; // Admin access only (server-side)
+    }
+    
+    match /security_incidents/{incidentId} {
+      allow read, write: if false; // Admin access only (server-side)
+    }
+    
+    // =============================================
+    // Public Read-only Data
+    // =============================================
+    match /app_configs/{configId} {
+      allow read: if true; // Public configuration
+      allow write: if false; // Admin access only
+    }
+    
+    // =============================================
+    // Rate Limiting and Monitoring
+    // =============================================
+    match /rate_limiting/{userId} {
+      allow read, write: if false; // System use only
+    }
+    
+    // =============================================
+    // Backup and Recovery
+    // =============================================
+    match /backups/{userId}/{document=**} {
+      allow read: if isAuthenticated() && 
+                     isOwner(userId) &&
+                     // Only allow access to own backups
+                     request.auth.uid == userId;
+      
+      allow write: if false; // Automated backup process only
+    }
+    
+    // =============================================
+    // Data Retention and Cleanup
+    // =============================================
+    match /deletion_requests/{requestId} {
+      allow create: if isAuthenticated() && 
+                       validateDeletionRequest(request.resource.data);
+      
+      allow read: if isAuthenticated() && 
+                     resource.data.userId == request.auth.uid;
+      
+      allow update, delete: if false; // System processing only
+      
+      function validateDeletionRequest(request) {
+        return request.userId == request.auth.uid &&
+               request.requestType in ['USER_DATA', 'ACTIVITY_DATA', 'ALL_DATA'] &&
+               isValidTimestamp(request.requestedAt);
+      }
+    }
+    
+    // =============================================
+    // Compliance and Legal
+    // =============================================
+    match /compliance_logs/{logId} {
+      allow read, write: if false; // Legal/compliance team only
+    }
+    
+    match /data_processing_records/{recordId} {
+      allow read: if isAuthenticated() && 
+                     resource.data.userId == request.auth.uid;
+      allow write: if false; // System use only
+    }
+    
+    // =============================================
+    // Default Deny Rule
+    // =============================================
+    match /{document=**} {
+      allow read, write: if false; // Explicit deny for all other paths
+    }
+  }
+}
+
+// =============================================
+// Security Rules for Cloud Storage
+// =============================================
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /user_uploads/{userId}/{fileName} {
+      allow read, write: if request.auth != null && 
+                            request.auth.uid == userId &&
+                            // File size limit (10MB)
+                            request.resource.size <= 10 * 1024 * 1024 &&
+                            // File type restrictions
+                            request.resource.contentType.matches('image/.*') &&
+                            // Rate limiting
+                            true; // Implement rate limiting logic
+    }
+    
+    match /public_assets/{fileName} {
+      allow read: if true;
+      allow write: if false; // Admin only
+    }
+    
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

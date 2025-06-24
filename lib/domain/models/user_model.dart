@@ -43,6 +43,30 @@ class User {
     );
   }
 
+  // Create from JSON (for Firebase Firestore data)
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] as String? ?? const Uuid().v4(),
+      email: json['email'] as String?,
+      displayName: json['displayName'] as String?,
+      photoUrl: json['photoUrl'] as String?,
+      height: (json['height'] as num?)?.toInt(),
+      weight: (json['weight'] as num?)?.toInt(),
+      age: (json['age'] as num?)?.toInt(),
+      isPremium: json['isPremium'] as bool? ?? false,
+      createdAt: json['createdAt'] is String
+          ? DateTime.parse(json['createdAt'] as String)
+          : json['createdAt'] != null
+              ? DateTime.fromMillisecondsSinceEpoch((json['createdAt'] as int?) ?? 0)
+              : DateTime.now(),
+      lastLoginAt: json['lastLoginAt'] != null
+          ? (json['lastLoginAt'] is String
+              ? DateTime.parse(json['lastLoginAt'] as String)
+              : DateTime.fromMillisecondsSinceEpoch((json['lastLoginAt'] as int?) ?? 0))
+          : null,
+    );
+  }
+
   // Convert to JSON
   Map<String, dynamic> toJson() {
     return {

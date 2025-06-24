@@ -11,31 +11,79 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // 管理者権限をチェック
+    function isAdmin() {
+      return request.auth != null && request.auth.token.role == 'admin';
+    }
+
+    // プレミアムユーザーかどうかをチェック
+    function isPremiumUser() {
+      return request.auth != null &&
+             request.auth.token.subscriptionTier == 'premium' &&
+             request.auth.token.isPremium == true;
+    }
+
+    // リクエストが適切なレート制限内かどうかをチェック（簡略化）
+    function isWithinRateLimit() {
+      return true; // 実際の実装ではFirebase Functionsでレート制限を行う
+    }
+
+    // データのサイズ制限チェック
+    function isValidDataSize(data, maxFields) {
+      return data.size() <= maxFields;
+    }
+
+    // 必須フィールドの存在チェック
+    function hasRequiredFields(data, requiredFields) {
+      return requiredFields.hasAll(data.keys());
+    }
+
     // リクエストデータが有効なユーザーデータかどうかをチェック
     function isValidUserData(data) {
-      return data.size() <= 10
-        && data.keys().hasOnly(['displayName', 'email', 'profileImageUrl', 'createdAt', 'updatedAt', 'subscriptionTier', 'goals', 'settings', 'lastSyncTimestamp', 'deviceInfo'])
-        && (data.displayName == null || data.displayName is string)
-        && (data.email == null || data.email is string)
-        && (data.profileImageUrl == null || data.profileImageUrl is string)
-        && (data.subscriptionTier == null || data.subscriptionTier is string);
+      return isValidDataSize(data, 15)
+        && data.keys().hasOnly([
+          'displayName', 'email', 'profileImageUrl', 'createdAt', 'updatedAt',
+          'subscriptionTier', 'goals', 'preferences', 'height', 'weight', 'age',
+          'gender', 'stats', 'lastSyncTimestamp', 'deviceInfo'
+        ])
+        && (data.displayName == null || (data.displayName is string && data.displayName.size() <= 100))
+        && (data.email == null || (data.email is string && data.email.matches('.*@.*')))
+        && (data.profileImageUrl == null || (data.profileImageUrl is string && data.profileImageUrl.size() <= 500))
+        && (data.subscriptionTier == null || data.subscriptionTier in ['free', 'premium'])
+        && (data.height == null || (data.height is number && data.height > 0 && data.height < 300))
+        && (data.weight == null || (data.weight is number && data.weight > 0 && data.weight < 500))
+        && (data.age == null || (data.age is number && data.age > 0 && data.age < 150));
     }
 
     // リクエストデータが有効なアクティビティデータかどうかをチェック
     function isValidActivityData(data) {
-      return data.size() <= 15
-        && data.keys().hasOnly(['activityId', 'userId', 'activityType', 'startTime', 'endTime', 'caloriesBurned', 'fatBurnedGrams', 'heartRateAvg', 'heartRateMax', 'steps', 'distance', 'createdAt', 'updatedAt', 'source', 'heartRateData'])
-        && data.activityId is string
+      return isValidDataSize(data, 12)
+        && data.keys().hasOnly([
+          'userId', 'type', 'timestamp', 'durationInSeconds', 'caloriesBurned',
+          'distanceInMeters', 'metadata', 'createdAt', 'updatedAt', 'source', 'heartRateData', 'notes'
+        ])
         && data.userId is string
-        && data.activityType is string
-        && data.startTime is timestamp
-        && data.endTime is timestamp
-        && data.caloriesBurned is number
-        && data.fatBurnedGrams is number
-        && (data.heartRateAvg == null || data.heartRateAvg is number)
-        && (data.heartRateMax == null || data.heartRateMax is number)
-        && (data.steps == null || data.steps is number)
-        && (data.distance == null || data.distance is number);
+        && data.type is string
+        && data.type in ['walking', 'running', 'cycling', 'swimming', 'workout', 'other']
+        && data.timestamp is timestamp
+        && data.durationInSeconds is number && data.durationInSeconds >= 0
+        && data.caloriesBurned is number && data.caloriesBurned >= 0
+        && (data.distanceInMeters == null || (data.distanceInMeters is number && data.distanceInMeters >= 0))
+        && (data.metadata == null || data.metadata is map);
+    }
+
+    // サブスクリプションデータの検証
+    function isValidSubscriptionData(data) {
+      return isValidDataSize(data, 15)
+        && data.keys().hasOnly([
+          'userId', 'subscriptionTier', 'status', 'startDate', 'endDate',
+          'productId', 'transactionId', 'originalTransactionId', 'receiptData',
+          'revenueCatCustomerId', 'createdAt', 'updatedAt', 'cancelledAt',
+          'cancellationReason', 'restoredAt'
+        ])
+        && data.userId is string
+        && data.subscriptionTier in ['free', 'premium']
+        && data.status in ['active', 'inactive', 'cancelled', 'expired'];
     }
 
     // ユーザーコレクション
@@ -58,6 +106,9 @@ service cloud.firestore {
       allow create: if isAuthenticated() && isUser(request.resource.data.userId) && isValidActivityData(request.resource.data);
       allow update: if isAuthenticated() && isUser(resource.data.userId) && isValidActivityData(request.resource.data);
       allow delete: if isAuthenticated() && isUser(resource.data.userId);
+
+      // 統計クエリ用の読み取り権限
+      allow list: if isAuthenticated() && request.query.limit <= 100;
     }
 
     // 会話コレクション
@@ -67,22 +118,96 @@ service cloud.firestore {
       allow update: if isAuthenticated() && isUser(resource.data.userId);
       allow delete: if isAuthenticated() && isUser(resource.data.userId);
 
-      // 会話メッセージサブコレクション
-      match /messages/{messageId} {
-        allow read: if isAuthenticated() && isUser(get(/databases/$(database)/documents/conversations/$(conversationId)).data.userId);
-        allow create: if isAuthenticated() && isUser(get(/databases/$(database)/documents/conversations/$(conversationId)).data.userId);
-        allow update: if false; // メッセージは更新不可
-        allow delete: if isAuthenticated() && isUser(get(/databases/$(database)/documents/conversations/$(conversationId)).data.userId);
-      }
+      // 会話は制限された数のみ保持
+      allow list: if isAuthenticated() && request.query.limit <= 20;
     }
 
     // サブスクリプションコレクション
-    match /subscriptions/{subscriptionId} {
-      allow read: if isAuthenticated() && isUser(resource.data.userId);
-      allow create, update, delete: if false; // サーバーサイドのみ更新可能
+    match /subscriptions/{userId} {
+      allow read: if isAuthenticated() && isUser(userId);
+      allow create, update: if false; // サーバーサイドのみ更新可能
+      allow delete: if false; // 削除は管理者のみ
     }
 
-    // その他のコレクションはデフォルトで拒否
+    // 購入履歴コレクション
+    match /purchases/{purchaseId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create, update, delete: if false; // サーバーサイドのみ
+    }
+
+    // 食事分析コレクション（プレミアム機能）
+    match /meal_analyses/{analysisId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create, update, delete: if false; // サーバーサイドのみ
+      allow list: if isAuthenticated() && isPremiumUser() && request.query.limit <= 50;
+    }
+
+    // 生成されたワークアウトコレクション
+    match /generated_workouts/{workoutId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create, update, delete: if false; // サーバーサイドのみ
+      allow list: if isAuthenticated() && request.query.limit <= 30;
+    }
+
+    // ユーザーインサイトコレクション
+    match /user_insights/{insightId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create, update, delete: if false; // サーバーサイドのみ
+      allow list: if isAuthenticated() && request.query.limit <= 10;
+    }
+
+    // エクスポート履歴コレクション
+    match /export_history/{exportId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow create, update, delete: if false; // サーバーサイドのみ
+    }
+
+    // 管理者専用コレクション
+    match /api_keys/{provider} {
+      allow read, write: if isAdmin();
+    }
+
+    match /admin_logs/{logId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /security_audit/{auditId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /system_config/{configId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // レート制限・監査ログコレクション
+    match /rate_limits/{limitId} {
+      allow read, write: if false; // Functions専用
+    }
+
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow write: if false; // Functions専用
+    }
+
+    // データ集計・統計コレクション（読み取り専用）
+    match /statistics/{statId} {
+      allow read: if isAuthenticated() && (isUser(resource.data.userId) || isAdmin());
+      allow write: if false; // Functions専用
+    }
+
+    // アプリ設定・通知コレクション
+    match /app_settings/{settingId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && isUser(resource.data.userId);
+      allow write: if false; // Functions専用
+    }
+
+    // セキュリティ強化：デフォルト拒否
     match /{document=**} {
       allow read, write: if false;
     }

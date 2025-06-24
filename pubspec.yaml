@@ -19,7 +19,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.4.4 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: ">=3.32.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,18 +36,83 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  health: ^12.2.0
+  
+  # Health & Activity (Google Fit廃止対応、Health Connect v11.0.0+対応)
+  health: ^12.8.0
+  
+  # Utilities
   uuid: ^4.5.1
-  firebase_auth: ^5.5.3
-  firebase_core: ^2.25.5
-  cloud_firestore: ^4.17.5
-  firebase_analytics: ^10.10.7
+  path_provider: ^2.1.1
+  
+  # UI Extensions (mobile版から統合)
+  flutter_svg: ^2.0.7
+  shimmer: ^3.0.0
+  lottie: ^2.6.0
+  flutter_markdown: ^0.6.18
+  
+  # Chat UI (mobile版から統合)
+  flutter_chat_ui: ^1.6.10
+  flutter_chat_types: ^3.6.2
+  
+  # State Management (mobile版から統合)
+  flutter_riverpod: ^2.4.0
+  riverpod_annotation: ^2.2.1
+  
+  # AI Integration - Gemini 2.5 Flash対応
+  google_generative_ai: ^0.7.0
+  
+  # Network - 最新安定版
+  http: ^1.4.0
+  retrofit: ^5.0.0
+  
+  # Subscription Management (mobile版から統合)
+  purchases_flutter: ^6.5.0
+  
+  # Enhanced Analytics (mobile版から統合)
+  firebase_crashlytics: ^3.4.8
+  # Firebase (2025年最新版 - AI Logic統合対応)
+  firebase_core: ^3.1.0
+  firebase_auth: ^5.1.0
+  cloud_firestore: ^5.1.0
+  firebase_analytics: ^11.2.0
   google_sign_in: ^6.2.2
   sign_in_with_apple: ^7.0.1
   shared_preferences: ^2.3.3
   intl: ^0.19.0
   flutter_localizations:
     sdk: flutter
+
+  # Additional dependencies for TDD implementation
+  flutter_dotenv: ^5.1.0
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  flutter_secure_storage: ^9.0.0
+  connectivity_plus: ^5.0.2
+  dio: ^5.7.0
+  get_it: ^8.0.0
+  injectable: ^2.5.0
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  fl_chart: ^0.66.2
+  cached_network_image: ^3.3.0
+  image_picker: ^1.0.4
+  permission_handler: ^11.1.0
+  logger: ^2.4.0
+  crypto: ^3.0.6
+  
+  # 2025年エンタープライズ追加機能
+  archive: ^4.0.7  # セキュリティアドバイザリ修正
+  device_info_plus: ^12.0.0  # デバイス情報
+  package_info_plus: ^8.0.2  # アプリ情報
+  url_launcher: ^6.3.1  # URL起動
+  share_plus: ^10.1.1  # 共有機能
+  in_app_purchase: ^3.2.0  # アプリ内課金
+  local_auth: ^2.3.0  # 生体認証
+  flutter_local_notifications: ^18.0.1  # 通知
+  workmanager: ^0.5.2  # バックグラウンド処理
+  
+  # Health Connect専用対応
+  health_connect: ^1.0.0  # 最新Health Connect対応
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +124,34 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+
+  # Testing dependencies - エンタープライズレベル
+  mocktail: ^1.0.4
+  faker: ^2.2.0
+  build_test: ^2.2.2
+  integration_test:
+    sdk: flutter
+  test: ^1.26.2
+  build_runner: ^2.5.0
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
+  injectable_generator: ^2.6.2
+  
+  # Code Generation - 最新版
+  riverpod_generator: ^2.6.0
+  retrofit_generator: ^9.1.2
+  
+  # Enhanced Testing - エンタープライズレベル
+  golden_toolkit: ^0.16.0
+  yaml: ^3.1.3
+  patrol: ^3.14.0  # 統合テスト強化
+  very_good_analysis: ^6.0.0  # 静的解析
+  test_cov: ^0.5.0  # カバレッジ詳細
+  
+  # セキュリティ & 監視
+  sentry_flutter: ^8.9.0  # エラー監視
+  firebase_performance: ^0.10.1  # パフォーマンス監視
+  firebase_remote_config: ^5.1.1  # リモート設定
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

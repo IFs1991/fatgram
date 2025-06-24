@@ -1,0 +1,22 @@
+{
+  "id": "test-user-123",
+  "name": "Test User",
+  "email": "test@example.com",
+  "age": 30,
+  "weight": 70.5,
+  "height": 175.0,
+  "gender": "male",
+  "activityLevel": "moderate",
+  "goals": {
+    "weightGoal": 65.0,
+    "dailyCalorieGoal": 2000,
+    "weeklyWorkoutGoal": 5
+  },
+  "preferences": {
+    "units": "metric",
+    "notifications": true,
+    "darkMode": false
+  },
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2024-01-15T12:30:00.000Z"
+}
