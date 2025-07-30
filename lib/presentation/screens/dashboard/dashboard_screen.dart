@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 
@@ -94,26 +95,38 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   /// ダッシュボードデータを読み込み
   Future<void> _loadDashboardData() async {
+    final stopwatch = Stopwatch()..start();
+    
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      // 並行してデータを取得
-      await Future.wait([
+      // 並行してデータを取得 - パフォーマンス最適化
+      final results = await Future.wait([
         _loadWeeklyStats(),
         _loadRecentActivities(),
       ]);
 
+      final weeklyStats = results[0] as WeeklyActivityStats;
+      final recentActivities = results[1] as List<Activity>;
+
       if (mounted) {
         setState(() {
+          _weeklyStats = weeklyStats;
+          _recentActivities = recentActivities;
           _isLoading = false;
         });
 
         // アニメーション開始
         _fadeAnimationController.forward();
         _slideAnimationController.forward();
+      }
+
+      stopwatch.stop();
+      if (kDebugMode) {
+        print('Dashboard data loaded in ${stopwatch.elapsedMilliseconds}ms');
       }
     } catch (e) {
       if (mounted) {
@@ -126,15 +139,15 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   /// 週間統計を取得
-  Future<void> _loadWeeklyStats() async {
+  Future<WeeklyActivityStats> _loadWeeklyStats() async {
     final weekStart = _getStartOfWeek(_selectedDate);
-    _weeklyStats = await _activityRepository.getWeeklyActivityStats(
+    return await _activityRepository.getWeeklyActivityStats(
       weekStartDate: weekStart,
     );
   }
 
   /// 最近のアクティビティを取得
-  Future<void> _loadRecentActivities() async {
+  Future<List<Activity>> _loadRecentActivities() async {
     final endDate = DateTime.now();
     final startDate = endDate.subtract(const Duration(days: 7));
 
@@ -143,7 +156,7 @@ class _DashboardScreenState extends State<DashboardScreen>
       endDate: endDate,
     );
 
-    _recentActivities = activities.take(10).toList();
+    return activities.take(10).toList();
   }
 
   /// 週の開始日を取得（月曜日）
